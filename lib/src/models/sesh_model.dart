@@ -12,13 +12,13 @@ class Sesh {
   List<Climb>? get climbs => _climbs;
 
   Sesh({
-    required id,
-    required dateTime,
-    required climbsCompleted,
-    required totalAttempts,
-    required averageGrade,
-    required highestGrade,
-    required climbs,
+    int? id,
+    DateTime? dateTime,
+    int? climbsCompleted,
+    int? totalAttempts,
+    int? averageGrade,
+    int? highestGrade,
+    List<Climb>? climbs,
   }) {
     _id = id;
     _dateTime = dateTime;
@@ -28,7 +28,6 @@ class Sesh {
     _highestGrade = highestGrade;
     _climbs = climbs;
   }
-
 
   Sesh.fromJson(Map<String, dynamic> json) {
     _id = json['id'];
@@ -55,7 +54,7 @@ class Sesh {
     data['average_grade'] = _averageGrade;
     data['highest_grade'] = _highestGrade;
 
-    if(_climbs != null){
+    if (_climbs != null) {
       data['climbs'] = _climbs?.map((v) => v.toJson()).toList();
     }
 

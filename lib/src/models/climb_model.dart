@@ -6,19 +6,18 @@ class Climb {
   String? _note;
 
   Climb({
-    required climbId,
-    required attempts,
-    required grade,
-    required completed,
+    int? climbId,
+    int? attempts,
+    int?grade,
+    bool? completed,
     String? note,
-  } ) {
+  }) {
     _climbId = climbId;
     _attempts = attempts;
     _grade = grade;
     _completed = completed;
     _note = note;
   }
-
 
   Climb.fromJson(Map<String, dynamic> json) {
     _climbId = json['climb_id'];

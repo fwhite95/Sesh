@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "276263402653",
+    "project_id": "the-sesh-63783",
+    "storage_bucket": "the-sesh-63783.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:276263402653:android:554bf9bcb5605237106874",
+        "android_client_info": {
+          "package_name": "com.example.climbing_sessions"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "276263402653-ec06pvpnvnq8hiqanssc60g3qmmd03qt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBrxELWvvMtB-v8Fk50_AO2pr7GNcnAqfg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "276263402653-ec06pvpnvnq8hiqanssc60g3qmmd03qt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
