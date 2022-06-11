@@ -1,5 +1,9 @@
 import 'package:climbing_sessions/src/bloc/auth/auth_bloc.dart';
+import 'package:climbing_sessions/src/models/climb_model.dart';
+import 'package:climbing_sessions/src/models/sesh_model.dart';
+import 'package:climbing_sessions/src/models/user_model.dart';
 import 'package:climbing_sessions/src/pages/login_signup/login_signup_page.dart';
+import 'package:climbing_sessions/src/repositories/sesh_repository.dart';
 import 'package:climbing_sessions/src/widgets/sesh_bottom_nav_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +17,21 @@ class CompletedSessionsPage extends StatefulWidget {
 }
 
 class _CompletedSessionsPageState extends State<CompletedSessionsPage> {
+  @override
+  void initState() {
+    super.initState();
+    // SeshRepository seshRepository = SeshRepository();
+    // //seshRepository.getUser(userId: 'EqwObmCtfCaHqZXIYTGf');
+    // String userId = 'EqwObmCtfCaHqZXIYTGf';
+    // UserModel userModel= UserModel(
+    //   climbs: [Climb()],
+    //   seshes: [Sesh()],
+    //   firstName: 'updateTest',
+    //   email: 'test1@gmail.com'
+    // );
+    // seshRepository.updateUser(userModel: userModel, userId: userId);
+  }
+
   @override
   Widget build(BuildContext context) {
     //look into utilizing user model

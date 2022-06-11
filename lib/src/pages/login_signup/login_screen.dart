@@ -11,17 +11,15 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   void _authenticateWithEmailAndPassword(context) {
-    //if (_formKey.currentState!.validate()) {
     // If email is valid adding new Event [SignInRequested].
     BlocProvider.of<AuthBloc>(context).add(
       SignInRequested(_emailController.text, _passwordController.text),
     );
-    //}
   }
 
   @override
@@ -56,6 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
               height: 30,
             ),
             Container(
+              padding: EdgeInsets.only(bottom: 15),
               child: TextField(
                 controller: _emailController,
                 decoration: InputDecoration(
@@ -63,6 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
             Container(
+              padding: EdgeInsets.only(bottom: 15),
               child: TextField(
                 controller: _passwordController,
                 decoration: InputDecoration(
@@ -76,7 +76,9 @@ class _LoginScreenState extends State<LoginScreen> {
             Container(
               child: ElevatedButton(
                 onPressed: () {
-                  _authenticateWithEmailAndPassword(context);
+                  if (_formKey.currentState!.validate()) {
+                    _authenticateWithEmailAndPassword(context);
+                  }
                 },
                 child: Text('Login'),
                 style: ButtonStyle(

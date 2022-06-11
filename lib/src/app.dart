@@ -4,6 +4,7 @@ import 'package:climbing_sessions/src/pages/login_signup/login_signup_page.dart'
 import 'package:climbing_sessions/src/pages/new_climb_page.dart';
 import 'package:climbing_sessions/src/pages/new_session_page.dart';
 import 'package:climbing_sessions/src/repositories/auth_repository.dart';
+import 'package:climbing_sessions/src/repositories/sesh_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

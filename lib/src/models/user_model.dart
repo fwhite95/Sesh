@@ -1,10 +1,9 @@
 import 'package:climbing_sessions/src/models/climb_model.dart';
 import 'package:climbing_sessions/src/models/sesh_model.dart';
 
-class User {
+class UserModel {
   String? _email;
   String? _firstName;
-  String? _lastName;
 
   List<Sesh>? _seshes;
   List<Climb>? _climbs;
@@ -12,27 +11,27 @@ class User {
   List<Sesh>? get seshes => _seshes;
   List<Climb>? get climbs => _climbs;
 
-  User({
+  String? get email => _email;
+  String? get firstName => _firstName;
+
+  UserModel({
     required email,
     required firstName,
-    required lastName,
     required seshes,
     required climbs,
   }) {
     _email = email;
     _firstName = firstName;
-    _lastName = lastName;
     _seshes = seshes;
     _climbs = climbs;
   }
 
 
-  User.fromJson(Map<String, dynamic> json) {
+  UserModel.fromJson(Map<String, dynamic> json) {
     _email = json['email'];
     _firstName = json['first_name'];
-    _lastName = json['last_name'];
 
-    if (json['sehes'] != null) {
+    if (json['seshes'] != null) {
       _seshes = <Sesh>[];
       json['seshes'].forEach((v) {
         _seshes?.add(Sesh.fromJson(v));
@@ -48,10 +47,9 @@ class User {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = {}; 
     data['email'] = _email;
     data['first_name'] = _firstName;
-    data['last_name'] = _lastName;
 
     if(_seshes != null){
       data['seshes'] = _seshes?.map((v) => v.toJson()).toList();

@@ -1,9 +1,15 @@
+import 'package:climbing_sessions/src/models/user_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthRepository {
   final _firebaseAuth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<void> signUp({required String email, required String password}) async {
+  Future<void> signUp(
+      {required String name,
+      required String email,
+      required String password}) async {
     try {
       await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
@@ -18,13 +24,33 @@ class AuthRepository {
     }
   }
 
+  //Should only be creating user on first signup
+  Future<void> createUser(
+      {required String? name,
+      required String? email}) async {
+    try {
+      var firebaseUser = FirebaseAuth.instance.currentUser;
+      CollectionReference users =
+          FirebaseFirestore.instance.collection('users');
+      await users.doc(firebaseUser?.uid).set({
+        'first_name': name,
+        'email': email,
+        'seshes': [{}],
+        'climbs': [{}],
+      });
+      
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
   Future<void> signIn({
     required String email,
     required String password,
   }) async {
     try {
       await FirebaseAuth.instance
-        .signInWithEmailAndPassword(email: email, password: password);
+          .signInWithEmailAndPassword(email: email, password: password);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         throw Exception('No user found for that email.');
