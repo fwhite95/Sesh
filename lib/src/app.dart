@@ -14,33 +14,36 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider(
-      create: (context) => AuthRepository(),
-      child: BlocProvider(
-        create: (context) => AuthBloc(
-          authRepository: RepositoryProvider.of<AuthRepository>(context),
-        ),
-        child: MaterialApp(
-          title: 'Flutter Demo',
-          theme: ThemeData(
-            brightness: Brightness.dark,
-          ),
-          themeMode: ThemeMode.dark,
-          home: StreamBuilder<User?>(
-            stream: FirebaseAuth.instance.authStateChanges(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return CompletedSessionsPage();
-              }
-              return const LoginSignupPage();
-            },
-          ),
-
-          //home: const CompletedSessionsPage(),
-          //home: const NewSessionPage(),
-          //home: const NewClimbPage(),
-        ),
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        brightness: Brightness.dark,
       ),
+      themeMode: ThemeMode.dark,
+      home: const BlocNavigate(),
+      // CompletedSessionsPage();
+      // LoginSignupPage();
+      //home: const CompletedSessionsPage(),
+      //home: const NewSessionPage(),
+      //home: const NewClimbPage(),
+    );
+  }
+}
+
+class BlocNavigate extends StatelessWidget {
+  const BlocNavigate({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AuthBloc, AuthState>(
+      builder: (context, state) {
+        if (state is Authenticated) {
+          print('app state is Authenticated');
+          return CompletedSessionsPage(userId: state.uuid,);
+        } else {
+          return const LoginSignupPage();
+        }
+      },
     );
   }
 }

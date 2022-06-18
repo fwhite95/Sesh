@@ -27,9 +27,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
     }
   }
 
-  void _createUserAfterSignUp(context) {
-    BlocProvider.of<AuthBloc>(context)
-        .add(CreateUserRequested(_nameController.text, _emailController.text));
+  void _createUserAfterSignUp(context, String? uuid) {
+    BlocProvider.of<AuthBloc>(context).add(
+        CreateUserRequested(_nameController.text, _emailController.text, uuid));
   }
 
   bool isEmail(String? value) {
@@ -42,6 +42,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // return BlocListener<AuthBloc, AuthState>(
+    //   listener: ((context, state) {
+    //     if(state is CreatingUser){
+    //       print('Signup screen state is Creating user');
+    //       _createUserAfterSignUp(context, state.uuid);
+    //     }
+    //   }),
+    //   child:
     return Container(
       margin: EdgeInsets.only(top: 30),
       padding: EdgeInsets.all(15),
@@ -62,7 +70,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Container(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  'Register now',
+                  'Register Now',
                   style: TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
@@ -136,7 +144,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     if (_formKey.currentState!.validate()) {
                       _authenticateWithEmailAndPassword(context);
                     }
-                    _createUserAfterSignUp(context);
+                    // _createUserAfterSignUp(context);
                   },
                   child: Text('Register'),
                   style: ButtonStyle(

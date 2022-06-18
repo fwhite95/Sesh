@@ -4,6 +4,7 @@ import 'package:climbing_sessions/src/models/sesh_model.dart';
 class UserModel {
   String? _email;
   String? _firstName;
+  String? _userId;
 
   List<Sesh>? _seshes;
   List<Climb>? _climbs;
@@ -13,15 +14,18 @@ class UserModel {
 
   String? get email => _email;
   String? get firstName => _firstName;
+  String? get userid => _userId;
 
   UserModel({
     required email,
     required firstName,
+    required userId,
     required seshes,
     required climbs,
   }) {
     _email = email;
     _firstName = firstName;
+    _userId = userid;
     _seshes = seshes;
     _climbs = climbs;
   }
@@ -30,6 +34,7 @@ class UserModel {
   UserModel.fromJson(Map<String, dynamic> json) {
     _email = json['email'];
     _firstName = json['first_name'];
+    _userId = json['user_id'];
 
     if (json['seshes'] != null) {
       _seshes = <Sesh>[];
@@ -50,6 +55,7 @@ class UserModel {
     final Map<String, dynamic> data = {}; 
     data['email'] = _email;
     data['first_name'] = _firstName;
+    data['user_id'] = _userId;
 
     if(_seshes != null){
       data['seshes'] = _seshes?.map((v) => v.toJson()).toList();

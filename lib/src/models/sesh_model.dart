@@ -1,4 +1,5 @@
 import 'package:climbing_sessions/src/models/climb_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Sesh {
   int? _id;
@@ -10,6 +11,13 @@ class Sesh {
 
   List<Climb>? _climbs;
   List<Climb>? get climbs => _climbs;
+
+  DateTime? get dateTime => _dateTime;
+  int? get climbsCompleted => _climbsCompleted;
+  int? get totalAttempts => _totalAttempts;
+  int? get averageGrade => _averageGrade;
+  int? get highestGrade => _highestGrade;
+  
 
   Sesh({
     int? id,
@@ -31,7 +39,7 @@ class Sesh {
 
   Sesh.fromJson(Map<String, dynamic> json) {
     _id = json['id'];
-    _dateTime = json['date_time'];
+    _dateTime = (json['date_time'] as Timestamp).toDate();
     _climbsCompleted = json['climbs_completed'];
     _totalAttempts = json['total_attempts'];
     _averageGrade = json['average_grade'];

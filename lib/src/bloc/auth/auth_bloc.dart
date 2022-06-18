@@ -1,12 +1,14 @@
 import 'package:bloc/bloc.dart';
+import 'package:climbing_sessions/src/models/user_model.dart';
 import 'package:climbing_sessions/src/repositories/auth_repository.dart';
 import 'package:climbing_sessions/src/repositories/sesh_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:meta/meta.dart';
+
 
 part 'auth_event.dart';
 part 'auth_state.dart';
+
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepository authRepository;
@@ -19,9 +21,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<SignInRequested>((event, emit) async {
       emit(Loading());
       try {
-        await authRepository.signIn(
+        UserCredential? userCredential = await authRepository.signIn(
             email: event.email, password: event.password);
-        emit(Authenticated());
+        emit(Authenticated(userCredential?.user?.uid));
       } catch (e) {
         emit(AuthError(e.toString()));
         emit(UnAuthenticated());
@@ -33,9 +35,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<SignUpRequested>((event, emit) async {
       emit(Loading());
       try {
-        await authRepository.signUp(
+        
+        UserCredential? userCredential = await authRepository.signUp(
             name: event.name, email: event.email, password: event.password);
         //emit(Authenticated());
+        emit(CreatingUser(event.name, event.email, userCredential?.user?.uid));
       } catch (e) {
         emit(AuthError(e.toString()));
         emit(UnAuthenticated());
@@ -44,9 +48,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     //After signup, create user
     on<CreateUserRequested>((event, emit) async {
+      emit(Loading());
       try{
-        await authRepository.createUser(name: event.name, email: event.email);
-        emit(Authenticated());
+        User? firebaseUser = await authRepository.createUser(name: event.name, email: event.email, uuid: event.uuid);
+        emit(Authenticated(firebaseUser?.uid));
       }catch(e) {
         emit(AuthError(e.toString()));
         emit(UnAuthenticated());

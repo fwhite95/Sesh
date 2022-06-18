@@ -18,6 +18,12 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
   int? initialIndex = 0;
   ScrollController _scrollController = ScrollController();
 
+  void _createUserAfterSignUp(context, String name, String email, String? uuid) {
+    print('name: $name + email: $email + uuid: $uuid');
+    BlocProvider.of<AuthBloc>(context)
+        .add(CreateUserRequested(name, email, uuid));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +34,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                  builder: (context) => const CompletedSessionsPage()));
+                  builder: (context) => CompletedSessionsPage(userId: state.uuid,)));
         }
         if (state is AuthError) {
           //show error message
@@ -38,6 +44,17 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         if (state is Loading) {
           return const Center(
             child: CircularProgressIndicator(),
+          );
+        }
+        if (state is CreatingUser) {
+          _createUserAfterSignUp(context, state.name, state.email, state.uuid);
+          return Center(
+            child: Center(
+              child: Column(children: [
+                Text('Creating User!'),
+                CircularProgressIndicator(),
+              ]),
+            ),
           );
         }
         if (state is UnAuthenticated) {

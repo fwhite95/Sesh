@@ -11,7 +11,7 @@ class SeshRepository {
   Future<void> createSesh() async {}
 
   Future<UserModel> getUser({
-    required String userId,
+    required String? userId,
   }) async {
     try {
       DocumentSnapshot snapshot = await users.doc(userId).get();
