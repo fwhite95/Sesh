@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:climbing_sessions/src/models/user_model.dart';
 import 'package:climbing_sessions/src/repositories/auth_repository.dart';
 import 'package:climbing_sessions/src/repositories/sesh_repository.dart';
 import 'package:equatable/equatable.dart';
@@ -12,8 +11,9 @@ part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepository authRepository;
+  final SeshRepository seshRepository;
 
-  AuthBloc({required this.authRepository})
+  AuthBloc({required this.authRepository, required this.seshRepository})
       : super(UnAuthenticated()) {
     // When User Presses the SignIn Button, we will send the
     //SignInRequested Event to the AuthBloc to handle it and
@@ -35,24 +35,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<SignUpRequested>((event, emit) async {
       emit(Loading());
       try {
-        
         UserCredential? userCredential = await authRepository.signUp(
             name: event.name, email: event.email, password: event.password);
-        //emit(Authenticated());
+        emit(Authenticated(userCredential?.user?.uid));
         emit(CreatingUser(event.name, event.email, userCredential?.user?.uid));
       } catch (e) {
-        emit(AuthError(e.toString()));
-        emit(UnAuthenticated());
-      }
-    });
-
-    //After signup, create user
-    on<CreateUserRequested>((event, emit) async {
-      emit(Loading());
-      try{
-        User? firebaseUser = await authRepository.createUser(name: event.name, email: event.email, uuid: event.uuid);
-        emit(Authenticated(firebaseUser?.uid));
-      }catch(e) {
         emit(AuthError(e.toString()));
         emit(UnAuthenticated());
       }

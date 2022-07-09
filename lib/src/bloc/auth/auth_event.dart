@@ -27,13 +27,13 @@ class SignUpRequested extends AuthEvent {
   SignUpRequested(this.name, this.email, this.password);
 }
 
-class CreateUserRequested extends AuthEvent {
-  final String name;
-  final String email;
-  final String? uuid;
+// class CreateUserRequested extends AuthEvent {
+//   final String name;
+//   final String email;
+//   final String? uuid;
 
-  CreateUserRequested(this.name, this.email, this.uuid);
-}
+//   CreateUserRequested(this.name, this.email, this.uuid);
+// }
 
 // // When the user signing out this event is called and the 
 // //[AuthRepository] is called to sign out the user

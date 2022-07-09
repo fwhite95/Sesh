@@ -1,9 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthRepository {
   final _firebaseAuth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
 
   Future<UserCredential?> signUp(
@@ -27,26 +25,26 @@ class AuthRepository {
   }
 
   //Should only be creating user on first signup
-  Future<User?> createUser(
-      {required String? name,
-      required String? email,
-      required String? uuid}) async {
-    try {
-      var firebaseUser = FirebaseAuth.instance.currentUser;
-      CollectionReference users =
-          FirebaseFirestore.instance.collection('users');
-      await users.doc(firebaseUser?.uid).set({
-        'first_name': name,
-        'email': email,
-        'user_id': uuid,
-        'seshes': [{}],
-        'climbs': [{}],
-      });
-      return firebaseUser;
-    } catch (e) {
-      throw Exception(e.toString());
-    }
-  }
+  // Future<User?> createUser(
+  //     {required String? name,
+  //     required String? email,
+  //     required String? uuid}) async {
+  //   try {
+  //     var firebaseUser = FirebaseAuth.instance.currentUser;
+  //     CollectionReference users =
+  //         FirebaseFirestore.instance.collection('users');
+  //     await users.doc(firebaseUser?.uid).set({
+  //       'first_name': name,
+  //       'email': email,
+  //       'user_id': uuid,
+  //       'seshes': [{}],
+  //       'climbs': [{}],
+  //     });
+  //     return firebaseUser;
+  //   } catch (e) {
+  //     throw Exception(e.toString());
+  //   }
+  // }
 
   Future<UserCredential?> signIn({
     required String email,

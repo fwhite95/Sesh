@@ -21,5 +21,17 @@ class SeshBloc extends Bloc<SeshEvent, SeshState> {
         emit(SeshError(e.toString()));
       }
     });
+    on<CreateUserRequested>((event, emit) async {
+      emit(Loading());
+      try{
+        UserModel? userModel = await seshRepository.createUser(email: event.email, firstName: event.firstName, uid: event.uuid);
+        emit(Browsing(userModel!));
+      }catch(e) {
+        emit(SeshError(e.toString()));
+      }
+    });
+    // on<CreateNewSeshRequested>((event, emit) {
+
+    // });
   }
 }

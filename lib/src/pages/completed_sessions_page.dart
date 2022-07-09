@@ -1,14 +1,17 @@
 import 'package:climbing_sessions/src/bloc/auth/auth_bloc.dart' as auth;
+import 'package:climbing_sessions/src/bloc/newSesh/newSesh_bloc.dart';
 import 'package:climbing_sessions/src/bloc/sesh/sesh_bloc.dart';
 import 'package:climbing_sessions/src/models/climb_model.dart';
 import 'package:climbing_sessions/src/models/sesh_model.dart';
 import 'package:climbing_sessions/src/models/user_model.dart';
 import 'package:climbing_sessions/src/pages/login_signup/login_signup_page.dart';
+import 'package:climbing_sessions/src/pages/new_session_page.dart';
 import 'package:climbing_sessions/src/repositories/sesh_repository.dart';
 import 'package:climbing_sessions/src/widgets/sesh_bottom_nav_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'dart:developer' as dev;
 
 class CompletedSessionsPage extends StatefulWidget {
   final String? userId;
@@ -19,6 +22,8 @@ class CompletedSessionsPage extends StatefulWidget {
 }
 
 class _CompletedSessionsPageState extends State<CompletedSessionsPage> {
+  late UserModel userModel;
+
   @override
   void initState() {
     super.initState();
@@ -30,6 +35,12 @@ class _CompletedSessionsPageState extends State<CompletedSessionsPage> {
         .add(SeshesRequested(widget.userId));
   }
 
+  void _createNewSesh(context, UserModel userModel) {
+    print('_createNewSesh');
+    //dev.log(userModel.toString());
+    BlocProvider.of<NewSeshBloc>(context).add(NewSeshRequested(userModel));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +48,9 @@ class _CompletedSessionsPageState extends State<CompletedSessionsPage> {
         title: Text('Completed Sessions'),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          _createNewSesh(context, userModel);
+        },
         tooltip: 'Add new sesh',
         child: Icon(Icons.add_box),
         elevation: 4.0,
@@ -66,6 +79,13 @@ class _CompletedSessionsPageState extends State<CompletedSessionsPage> {
               _getSeshes(context);
             }
           }),
+          BlocListener<NewSeshBloc, NewSeshState>(listener: (context, state) {
+            if (state is NewSeshInitial) {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => NewSessionPage()));
+                  
+            }
+          }),
         ],
         child: BlocBuilder<SeshBloc, SeshState>(
           builder: (context, state) {
@@ -84,6 +104,7 @@ class _CompletedSessionsPageState extends State<CompletedSessionsPage> {
               );
             }
             if (state is Browsing) {
+              userModel = state.userModel;
               print('state is Browsing');
               print(state.userModel.firstName);
               return ListView.builder(

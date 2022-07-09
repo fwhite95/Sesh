@@ -1,9 +1,10 @@
 import 'dart:async';
 
+import 'package:climbing_sessions/src/bloc/newClimb/newClimb_bloc.dart';
 import 'package:climbing_sessions/src/models/climb_model.dart';
 import 'package:climbing_sessions/src/models/sesh_model.dart';
-import 'package:climbing_sessions/src/widgets/sesh_bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 class NewSessionPage extends StatefulWidget {
@@ -17,7 +18,7 @@ class _NewSessionPageState extends State<NewSessionPage> {
   Timer? timer;
   late Stopwatch stopwatch;
   String formattedDate = '';
-  Sesh newSesh = Sesh(climbs: []);
+  Sesh currSesh = Sesh(climbs: []);
 
   @override
   void initState() {
@@ -28,6 +29,11 @@ class _NewSessionPageState extends State<NewSessionPage> {
     //so that it can constantly update UI (or just use a package)
     DateTime now = DateTime.now();
     formattedDate = DateFormat('kk:mm:ss').format(now);
+  }
+
+  void _createNewClimb(context) {
+    print('_createNewClimb');
+    BlocProvider.of<NewClimbBloc>(context).add(NewClimbRequested());
   }
 
   @override
@@ -43,8 +49,9 @@ class _NewSessionPageState extends State<NewSessionPage> {
               setState(() {
                 //needs to get the returned Climb object
                 //from the create climb page
-                newSesh.climbs?.add(Climb());
-                print(newSesh.climbs?.length);
+                //newSesh.climbs?.add(Climb());
+                //print(newSesh.climbs?.length);
+                _createNewClimb(context);
               });
             },
             icon: Icon(
@@ -66,16 +73,16 @@ class _NewSessionPageState extends State<NewSessionPage> {
             SizedBox(
               height: 10,
             ),
-            !newSesh.climbs!.isEmpty
+            !currSesh.climbs!.isEmpty
                 ? Expanded(
                     child: ListView.builder(
-                        itemCount: newSesh.climbs?.length ?? 0,
+                        itemCount: currSesh.climbs?.length ?? 0,
                         itemBuilder: (BuildContext context, index) {
                           return Container(
                             margin: EdgeInsets.only(left: 10, right: 10),
                             child: ListTile(
                               title: Text(
-                                  'Test of climbs.length: ${newSesh.climbs?.length}'),
+                                  'Test of climbs.length: ${currSesh.climbs?.length}'),
                             ),
                             decoration: BoxDecoration(
                               border: Border(

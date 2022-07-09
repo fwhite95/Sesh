@@ -1,4 +1,5 @@
-import 'package:climbing_sessions/src/bloc/auth/auth_bloc.dart';
+import 'package:climbing_sessions/src/bloc/auth/auth_bloc.dart' as auth;
+import 'package:climbing_sessions/src/bloc/sesh/sesh_bloc.dart' as sesh;
 import 'package:climbing_sessions/src/pages/completed_sessions_page.dart';
 import 'package:climbing_sessions/src/pages/login_signup/login_screen.dart';
 import 'package:climbing_sessions/src/pages/login_signup/signup_screen.dart';
@@ -20,44 +21,49 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
 
   void _createUserAfterSignUp(context, String name, String email, String? uuid) {
     print('name: $name + email: $email + uuid: $uuid');
-    BlocProvider.of<AuthBloc>(context)
-        .add(CreateUserRequested(name, email, uuid));
+    BlocProvider.of<sesh.SeshBloc>(context).add(sesh.CreateUserRequested(name, email, uuid));
   }
+
+  
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black12,
-      body: BlocListener<AuthBloc, AuthState>(listener: (context, state) {
-        if (state is Authenticated) {
+      body: BlocListener<auth.AuthBloc, auth.AuthState>(listener: (context, state) {
+        if (state is auth.Authenticated) {
           //navigating to the home screen is user is authenticated
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                   builder: (context) => CompletedSessionsPage(userId: state.uuid,)));
         }
-        if (state is AuthError) {
+        if (state is auth.AuthError) {
           //show error message
-          print('state is AuthError: $AuthError');
+          print('state is AuthError: ${auth.AuthError}');
         }
-      }, child: BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
-        if (state is Loading) {
+        if (state is auth.CreatingUser) {
+          print('state is auth.CreatingUser');
+          _createUserAfterSignUp(context, state.name, state.email, state.uuid);
+        }
+      }, child: BlocBuilder<auth.AuthBloc, auth.AuthState>(builder: (context, state) {
+        if (state is auth.Loading) {
           return const Center(
             child: CircularProgressIndicator(),
           );
         }
-        if (state is CreatingUser) {
-          _createUserAfterSignUp(context, state.name, state.email, state.uuid);
-          return Center(
-            child: Center(
-              child: Column(children: [
-                Text('Creating User!'),
-                CircularProgressIndicator(),
-              ]),
-            ),
-          );
-        }
-        if (state is UnAuthenticated) {
+        // if (state is CreatingUser) {
+        //   _createUserAfterSignUp(context, state.name, state.email, state.uuid);
+        //   return Center(
+        //     child: Center(
+        //       child: Column(children: [
+        //         Text('Creating User!'),
+        //         CircularProgressIndicator(),
+        //       ]),
+        //     ),
+        //   );
+        // }
+        if (state is auth.UnAuthenticated) {
           return SingleChildScrollView(
             controller: _scrollController,
             child: Column(

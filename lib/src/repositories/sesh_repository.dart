@@ -1,14 +1,46 @@
-import 'dart:convert';
-
 import 'package:climbing_sessions/src/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class SeshRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   CollectionReference users = FirebaseFirestore.instance.collection('users');
 
-  Future<void> createSesh() async {}
+  Future<UserModel?> createUser(
+      {required String? uid,
+      required String? email,
+      required String? firstName}) async {
+    try {
+      UserModel userModel =
+          UserModel(email: email, firstName: firstName, userId: uid);
+      await users.doc(uid).set(userModel.toJson());
+      return userModel;
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
+  //Should only be creating user on first signup
+  // Future<User?> createUser(
+  //     {required String? name,
+  //     required String? email,
+  //     required String? uuid}) async {
+  //   try {
+  //     var firebaseUser = FirebaseAuth.instance.currentUser;
+  //     CollectionReference users =
+  //         FirebaseFirestore.instance.collection('users');
+  //     await users.doc(firebaseUser?.uid).set({
+  //       'first_name': name,
+  //       'email': email,
+  //       'user_id': uuid,
+  //       'seshes': [{}],
+  //       'climbs': [{}],
+  //     });
+  //     return firebaseUser;
+  //   } catch (e) {
+  //     throw Exception(e.toString());
+  //   }
+  // }
 
   Future<UserModel> getUser({
     required String? userId,
@@ -21,7 +53,7 @@ class SeshRepository {
     } catch (e) {
       print(e.toString());
     }
-    
+
     throw Error();
   }
 
@@ -29,9 +61,9 @@ class SeshRepository {
     required UserModel userModel,
     required String userId,
   }) async {
-    try{
+    try {
       await users.doc(userId).update(userModel.toJson());
-    }catch(e) {
+    } catch (e) {
       print(e.toString());
     }
   }

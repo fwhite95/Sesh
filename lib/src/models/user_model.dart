@@ -1,7 +1,20 @@
 import 'package:climbing_sessions/src/models/climb_model.dart';
 import 'package:climbing_sessions/src/models/sesh_model.dart';
+import 'package:equatable/equatable.dart';
 
-class UserModel {
+class UserModel extends Equatable {
+  UserModel({
+    required email,
+    required firstName,
+    required userId,
+  }) {
+    _email = email;
+    _firstName = firstName;
+    _userId = userid;
+    _seshes = [];
+    _climbs = [];
+  }
+
   String? _email;
   String? _firstName;
   String? _userId;
@@ -15,21 +28,6 @@ class UserModel {
   String? get email => _email;
   String? get firstName => _firstName;
   String? get userid => _userId;
-
-  UserModel({
-    required email,
-    required firstName,
-    required userId,
-    required seshes,
-    required climbs,
-  }) {
-    _email = email;
-    _firstName = firstName;
-    _userId = userid;
-    _seshes = seshes;
-    _climbs = climbs;
-  }
-
 
   UserModel.fromJson(Map<String, dynamic> json) {
     _email = json['email'];
@@ -52,19 +50,22 @@ class UserModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = {}; 
+    final Map<String, dynamic> data = {};
     data['email'] = _email;
     data['first_name'] = _firstName;
     data['user_id'] = _userId;
 
-    if(_seshes != null){
+    if (_seshes != null) {
       data['seshes'] = _seshes?.map((v) => v.toJson()).toList();
     }
 
-    if(_climbs != null){
+    if (_climbs != null) {
       data['climbs'] = _climbs?.map((v) => v.toJson()).toList();
     }
 
     return data;
   }
+
+  @override
+  List<Object?> get props => [];
 }
