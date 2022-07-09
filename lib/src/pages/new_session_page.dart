@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:climbing_sessions/src/bloc/newClimb/newClimb_bloc.dart';
+import 'package:climbing_sessions/src/bloc/newSesh/newSesh_bloc.dart';
 import 'package:climbing_sessions/src/models/climb_model.dart';
 import 'package:climbing_sessions/src/models/sesh_model.dart';
+import 'package:climbing_sessions/src/pages/new_climb_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -62,49 +64,67 @@ class _NewSessionPageState extends State<NewSessionPage> {
         ],
       ),
       //bottomNavigationBar: SeshBottomNavBar(),
-      body: Container(
-        alignment: Alignment.center,
-        child: Column(
-          //Timer - length of session
-          //list of climbs as added
-          //Add climb to sesh
-          //End sesh button
-          children: [
-            SizedBox(
-              height: 10,
-            ),
-            !currSesh.climbs!.isEmpty
-                ? Expanded(
-                    child: ListView.builder(
-                        itemCount: currSesh.climbs?.length ?? 0,
-                        itemBuilder: (BuildContext context, index) {
-                          return Container(
-                            margin: EdgeInsets.only(left: 10, right: 10),
-                            child: ListTile(
-                              title: Text(
-                                  'Test of climbs.length: ${currSesh.climbs?.length}'),
-                            ),
-                            decoration: BoxDecoration(
-                              border: Border(
-                                  bottom: BorderSide(color: Colors.white)),
-                            ),
-                          );
-                        }))
-                : Container(
-                    child: Text('New sesh'),
+      body: MultiBlocListener(
+        listeners: [
+          BlocListener<NewClimbBloc, NewClimbState>(listener: (context, state) {
+            if (state is NewClimbRequested) {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => NewClimbPage()));
+            }
+          }),
+        ],
+        child:
+            BlocBuilder<NewSeshBloc, NewSeshState>(builder: (context, state) {
+          if (state is NewSeshInitial) {
+            print(state.toString());
+            return Container(
+              alignment: Alignment.center,
+              child: Column(
+                //Timer - length of session
+                //list of climbs as added
+                //Add climb to sesh
+                //End sesh button
+                children: [
+                  SizedBox(
+                    height: 10,
                   ),
-            SizedBox(
-              height: 10,
-            ),
-            Container(
-              margin: EdgeInsets.only(bottom: 10),
-              child: ElevatedButton(
-                child: Text('End Session'),
-                onPressed: () {},
+                  currSesh.climbs!.isNotEmpty
+                      ? Expanded(
+                          child: ListView.builder(
+                              itemCount: currSesh.climbs?.length ?? 0,
+                              itemBuilder: (BuildContext context, index) {
+                                return Container(
+                                  margin: EdgeInsets.only(left: 10, right: 10),
+                                  child: ListTile(
+                                    title: Text(
+                                        'Test of climbs.length: ${currSesh.climbs?.length}'),
+                                  ),
+                                  decoration: BoxDecoration(
+                                    border: Border(
+                                        bottom:
+                                            BorderSide(color: Colors.white)),
+                                  ),
+                                );
+                              }))
+                      : Container(
+                          child: Text('New sesh'),
+                        ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(bottom: 10),
+                    child: ElevatedButton(
+                      child: Text('End Session'),
+                      onPressed: () {},
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
+            );
+          }
+          return Container();
+        }),
       ),
     );
   }
