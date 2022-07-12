@@ -8,10 +8,22 @@ class NewClimbLoading extends NewClimbState {
 }
 
 class NewClimbInitial extends NewClimbState {
+  final Climb climb;
+
+  NewClimbInitial(this.climb);
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [climb];
 }
+
+// class NewClimbWorking extends NewClimbState {
+//   final Climb currClimb;
+
+//   NewClimbWorking(this.currClimb);
+
+//   @override
+//   List<Object?> get props => [currClimb];
+// } 
 
 class NewClimbCreated extends NewClimbState {
 

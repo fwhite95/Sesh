@@ -34,7 +34,6 @@ class _NewSessionPageState extends State<NewSessionPage> {
   }
 
   void _createNewClimb(context) {
-    print('_createNewClimb');
     BlocProvider.of<NewClimbBloc>(context).add(NewClimbRequested());
   }
 
@@ -67,7 +66,7 @@ class _NewSessionPageState extends State<NewSessionPage> {
       body: MultiBlocListener(
         listeners: [
           BlocListener<NewClimbBloc, NewClimbState>(listener: (context, state) {
-            if (state is NewClimbRequested) {
+            if (state is NewClimbInitial) {
               Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => NewClimbPage()));
             }

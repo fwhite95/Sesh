@@ -60,7 +60,7 @@ class _CompletedSessionsPageState extends State<CompletedSessionsPage> {
       body: MultiBlocListener(
         listeners: [
           BlocListener<auth.AuthBloc, auth.AuthState>(
-              listener: ((context, state) {
+              listener: (context, state) {
             if (state is auth.UnAuthenticated) {
               //navigate to sign in screen
               Navigator.of(context).pushAndRemoveUntil(
@@ -72,7 +72,7 @@ class _CompletedSessionsPageState extends State<CompletedSessionsPage> {
               print('state is auth.Authenticated????');
               _getSeshes(context);
             }
-          })),
+          }),
           BlocListener<SeshBloc, SeshState>(listener: (context, state) {
             if (state is SeshInitial) {
               print('state is SeshInitial');

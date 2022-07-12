@@ -1,39 +1,40 @@
 class Climb {
-  int? _climbId;
-  int? _attempts;
-  int? _grade;
-  bool? _completed;
-  String? _note;
+  int? climbId;
+  int? attempts;
+  int? grade;
+  bool? completed;
+  String? note;
 
   Climb({
     int? climbId,
-    int? attempts,
-    int?grade,
-    bool? completed,
+    int? attempts = 0,
+    int?grade = 0,
+    bool? completed = false,
     String? note,
   }) {
-    _climbId = climbId;
-    _attempts = attempts;
-    _grade = grade;
-    _completed = completed;
-    _note = note;
+    this.climbId = climbId;
+    this.attempts = attempts;
+    this.grade = grade;
+    this.completed = completed;
+    this.note = note;
   }
 
+
   Climb.fromJson(Map<String, dynamic> json) {
-    _climbId = json['climb_id'];
-    _attempts = json['attempts'];
-    _grade = json['grade'];
-    _completed = json['completed'];
-    _note = json['note'];
+    climbId = json['climb_id'];
+    attempts = json['attempts'];
+    grade = json['grade'];
+    completed = json['completed'];
+    note = json['note'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
-    data['climb_id'] = _climbId;
-    data['attempts'] = _attempts;
-    data['grade'] = _grade;
-    data['completed'] = _completed;
-    data['note'] = _note;
+    data['climb_id'] = climbId;
+    data['attempts'] = attempts;
+    data['grade'] = grade;
+    data['completed'] = completed;
+    data['note'] = note;
 
     return data;
   }

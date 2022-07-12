@@ -1,4 +1,5 @@
 import 'package:climbing_sessions/src/bloc/auth/auth_bloc.dart';
+import 'package:climbing_sessions/src/bloc/newClimb/newClimb_bloc.dart';
 import 'package:climbing_sessions/src/bloc/newSesh/newSesh_bloc.dart';
 import 'package:climbing_sessions/src/bloc/sesh/sesh_bloc.dart';
 import 'package:climbing_sessions/src/pages/completed_sessions_page.dart';
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
             BlocProvider(create: (context) => AuthBloc(authRepository: _authRepository, seshRepository: _seshRepository)),
             BlocProvider(create: (context) => SeshBloc(seshRepository: _seshRepository)),
             BlocProvider(create: (context) => NewSeshBloc(seshRepository: _seshRepository)),
+            BlocProvider(create: (context) => NewClimbBloc(seshRepository: _seshRepository)),
           ],
           child: const AppView(),
         )
