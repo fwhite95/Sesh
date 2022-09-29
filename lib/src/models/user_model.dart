@@ -7,12 +7,14 @@ class UserModel extends Equatable {
     required email,
     required firstName,
     required userId,
+    List<Sesh>? seshes,
+    List<Climb>? climbs,
   }) {
     _email = email;
     _firstName = firstName;
     _userId = userid;
-    _seshes = [];
-    _climbs = [];
+    _seshes = seshes ?? [];
+    _climbs = climbs ?? [];
   }
 
   String? _email;
@@ -67,5 +69,5 @@ class UserModel extends Equatable {
   }
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [_email, _firstName, _userId, _seshes, _climbs];
 }
