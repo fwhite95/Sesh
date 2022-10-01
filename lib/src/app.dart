@@ -1,3 +1,5 @@
+import 'package:climbing_sessions/src/screens/authentication/auth_screen.dart';
+import 'package:climbing_sessions/src/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -23,13 +25,14 @@ class AppView extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        brightness: Brightness.dark,
+        //brightness: Brightness.dark,
       ),
-      themeMode: ThemeMode.dark,
+      //themeMode: ThemeMode.dark,
       home: const BlocNavigate(),
     );
   }
 }
+
 
 
 class BlocNavigate extends StatelessWidget {
@@ -37,6 +40,6 @@ class BlocNavigate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return AuthScreen();
   }
 }
