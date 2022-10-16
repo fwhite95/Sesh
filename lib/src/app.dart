@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'screens/home/home_screen.dart';
+import 'screens/sesh/new_sesh_screen.dart';
+import 'screens/sesh/sesh_screen.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({
@@ -42,6 +44,6 @@ class BlocNavigate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return HomeScreen();
+    return NewSeshScreen();
   }
 }

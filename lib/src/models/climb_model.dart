@@ -8,7 +8,7 @@ class Climb {
   Climb({
     int? climbId,
     int? attempts = 0,
-    int?grade = 0,
+    int? grade = 0,
     bool? completed = false,
     String? note,
   }) {
