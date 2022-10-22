@@ -1,18 +1,24 @@
+import 'package:climbing_sessions/src/repository/auth_repository.dart';
 import 'package:climbing_sessions/src/util/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
-import 'login_screen.dart';
-import 'signup_screen.dart';
+import '../../bloc/login/login_cubit.dart';
+import '../../bloc/signup/signup_cubit.dart';
+import 'login_page.dart';
+import 'signup_page.dart';
 
-class AuthScreen extends StatefulWidget {
-  const AuthScreen({Key? key}) : super(key: key);
+class AuthPage extends StatefulWidget {
+  const AuthPage({Key? key}) : super(key: key);
+
+  static Page<void> page() => const MaterialPage<void>(child: AuthPage());
 
   @override
-  State<AuthScreen> createState() => _AuthScreenState();
+  State<AuthPage> createState() => _AuthPageState();
 }
 
-class _AuthScreenState extends State<AuthScreen> {
+class _AuthPageState extends State<AuthPage> {
   int? initialIndex = 0;
 
   @override
@@ -33,11 +39,17 @@ class _AuthScreenState extends State<AuthScreen> {
               initialIndex == 0
                   ? Container(
                       padding: const EdgeInsets.only(top: 10, bottom: 15, left: 15, right: 15),
-                      child: const LoginScreen(),
+                      child: BlocProvider(
+                        create: (_) => LoginCubit(context.read<AuthenticationRepository>()),
+                        child: LoginPage(),
+                        ),
                     )
                   : Container(
                       padding: const EdgeInsets.all(10),
-                      child: const SignupScreen(),
+                      child: BlocProvider(
+                        create: (_) => SignupCubit(context.read<AuthenticationRepository>()),
+                        child: SignupPage(),
+                        ),
                     ),
               ToggleSwitch(
                 minWidth: 90.0,

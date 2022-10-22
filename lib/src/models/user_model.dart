@@ -3,71 +3,74 @@ import 'package:climbing_sessions/src/models/sesh_model.dart';
 import 'package:equatable/equatable.dart';
 
 class UserModel extends Equatable {
-  UserModel({
-    required email,
-    required firstName,
-    required userId,
-    List<Sesh>? seshes,
-    List<Climb>? climbs,
-  }) {
-    _email = email;
-    _firstName = firstName;
-    _userId = userid;
-    _seshes = seshes ?? [];
-    _climbs = climbs ?? [];
-  }
+  const UserModel({
+    required this.email,
+    required this.firstName,
+    required this.userId,
+    this.seshes,
+    this.climbs,
+  });
 
-  String? _email;
-  String? _firstName;
-  String? _userId;
+  final String? email;
+  final String? firstName;
+  final String? userId;
 
-  List<Sesh>? _seshes;
-  List<Climb>? _climbs;
+  final List<Sesh>? seshes;
+  final List<Climb>? climbs;
 
-  List<Sesh>? get seshes => _seshes;
-  List<Climb>? get climbs => _climbs;
+  // List<Sesh>? get seshes => _seshes;
+  // List<Climb>? get climbs => _climbs;
 
-  String? get email => _email;
-  String? get firstName => _firstName;
-  String? get userid => _userId;
+  // String? get email => _email;
+  // String? get firstName => _firstName;
+  // String? get userid => _userId;
 
-  UserModel.fromJson(Map<String, dynamic> json) {
-    _email = json['email'];
-    _firstName = json['first_name'];
-    _userId = json['user_id'];
+  // UserModel.fromJson(Map<String, dynamic> json) {
+  //   email = json['email'];
+  //   firstName = json['first_name'];
+  //   userId = json['user_id'];
 
-    if (json['seshes'] != null) {
-      _seshes = <Sesh>[];
-      json['seshes'].forEach((v) {
-        _seshes?.add(Sesh.fromJson(v));
-      });
-    }
+  //   if (json['seshes'] != null) {
+  //     _seshes = <Sesh>[];
+  //     json['seshes'].forEach((v) {
+  //       _seshes?.add(Sesh.fromJson(v));
+  //     });
+  //   }
 
-    if (json['climbs'] != null) {
-      _climbs = <Climb>[];
-      json['climbs'].forEach((v) {
-        _climbs?.add(Climb.fromJson(v));
-      });
-    }
-  }
+  //   if (json['climbs'] != null) {
+  //     _climbs = <Climb>[];
+  //     json['climbs'].forEach((v) {
+  //       _climbs?.add(Climb.fromJson(v));
+  //     });
+  //   }
+  // }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = {};
-    data['email'] = _email;
-    data['first_name'] = _firstName;
-    data['user_id'] = _userId;
+    data['email'] = email;
+    data['first_name'] = firstName;
+    data['user_id'] = userId;
 
-    if (_seshes != null) {
-      data['seshes'] = _seshes?.map((v) => v.toJson()).toList();
+    if (seshes != null) {
+      data['seshes'] = seshes?.map((v) => v.toJson()).toList();
     }
 
-    if (_climbs != null) {
-      data['climbs'] = _climbs?.map((v) => v.toJson()).toList();
+    if (climbs != null) {
+      data['climbs'] = climbs?.map((v) => v.toJson()).toList();
     }
 
     return data;
   }
 
+  /// Empty user which represents an unauthenticated user
+  static const empty = UserModel(email: '', firstName: '', userId: '');
+
+  /// Convenience getter to determine whether the current user is empty.
+  bool get isEmpty => this == UserModel.empty;
+
+  /// Convenience getter to determine whether the current user is not empty.
+  bool get isNotEmpty => this != UserModel.empty;
+
   @override
-  List<Object?> get props => [_email, _firstName, _userId, _seshes, _climbs];
+  List<Object?> get props => [email, firstName, userId, seshes, climbs];
 }

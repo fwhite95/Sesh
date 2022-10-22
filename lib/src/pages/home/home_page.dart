@@ -1,27 +1,32 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:climbing_sessions/src/util/colors.dart';
 import 'package:climbing_sessions/src/widgets/sesh_bottom_nav_bar.dart';
 import 'package:climbing_sessions/src/widgets/sesh_card.dart';
 import 'package:climbing_sessions/src/widgets/stat_carousel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+import '../../bloc/app/app_bloc.dart';
+
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
+  static Page<void> page() => const MaterialPage<void>(child: HomePage());
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
+    final user = context.select((AppBloc bloc) => bloc.state.user);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
         backgroundColor: AppColors.green,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () => context.read<AppBloc>().add(AppLogoutRequested()),
         child: Icon(Icons.add),
         backgroundColor: AppColors.green,
       ),

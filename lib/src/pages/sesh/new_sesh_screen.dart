@@ -1,11 +1,6 @@
-import 'dart:async';
-
 import 'package:climbing_sessions/src/util/colors.dart';
-import 'package:climbing_sessions/src/widgets/sesh_bottom_nav_bar.dart';
-import 'package:climbing_sessions/src/widgets/sesh_card.dart';
-import 'package:climbing_sessions/src/widgets/stat_carousel.dart';
+import 'package:climbing_sessions/src/widgets/new_climb_card.dart';
 import 'package:flutter/material.dart';
-import 'package:async/async.dart';
 
 class NewSeshScreen extends StatefulWidget {
   const NewSeshScreen({Key? key}) : super(key: key);
@@ -21,7 +16,7 @@ class _NewSeshScreenState extends State<NewSeshScreen> {
   @override
   void initState() {
     super.initState();
-    stopwatch.start();
+    //stopwatch.start();
   }
 
   String updateTime() {
@@ -42,12 +37,11 @@ class _NewSeshScreenState extends State<NewSeshScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           setState(() {
-            if(stopwatch.isRunning){
+            if (stopwatch.isRunning) {
               stopwatch.stop();
-            }else {
+            } else {
               stopwatch.start();
             }
-            
           });
         },
         child: Icon(Icons.add),
@@ -77,7 +71,7 @@ class _NewSeshScreenState extends State<NewSeshScreen> {
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
-                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -93,8 +87,13 @@ class _NewSeshScreenState extends State<NewSeshScreen> {
                       topRight: Radius.circular(50)),
                   color: Colors.white,
                 ),
+                child: Column(
+                  children: [
+                    NewClimbCard(seshId: '1', grade: 'V5',),
+                  ],
+                ),
               ),
-            )
+            ),
           ],
         ),
       ),
