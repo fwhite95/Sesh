@@ -103,13 +103,13 @@ class AuthenticationRepository {
   ///
   /// Emits [User.empty] if the user is not authenticated.
   Stream<UserModel> get user {
-    return _firebaseAuth.authStateChanges().map((firebaseUser) {
-      final UserModel user = firebaseUser == null
+    return _firebaseAuth.authStateChanges().map((authUser) {
+      final UserModel user = authUser == null
           ? UserModel.empty
           : UserModel(
-              email: firebaseUser.email,
-              firstName: firebaseUser.displayName,
-              userId: firebaseUser.uid);
+              email: authUser.email,
+              firstName: authUser.displayName,
+              userId: authUser.uid);
       //_cache.write(key: firebaseUser!.uid, value: user);
       //for testing
       _cache.write(key: userCacheKey, value: user);

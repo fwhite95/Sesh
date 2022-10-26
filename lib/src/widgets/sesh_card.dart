@@ -1,43 +1,17 @@
+import 'package:climbing_sessions/src/models/climb_model.dart';
+import 'package:climbing_sessions/src/models/sesh_model.dart';
 import 'package:climbing_sessions/src/util/colors.dart';
 import 'package:flutter/material.dart';
 
 class SeshCard extends StatelessWidget {
-  final List<Widget> _climbsList;
+  final Sesh _sesh;
 
-  SeshCard({Key? key, required List<Widget> climbsList})
-      : _climbsList = climbsList,
+  SeshCard({Key? key, required Sesh sesh})
+      : _sesh = sesh,
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    _climbsList.add(
-      Padding(
-        padding: const EdgeInsets.all(5.0),
-        child: ClimbCard(
-          climbName: '#1',
-          grade: 'V5',
-        ),
-      ),
-    );
-    _climbsList.add(
-      Padding(
-        padding: const EdgeInsets.all(5.0),
-        child: ClimbCard(
-          climbName: '#1',
-          grade: 'V5',
-        ),
-      ),
-    );
-    _climbsList.add(
-      Padding(
-        padding: const EdgeInsets.all(5.0),
-        child: ClimbCard(
-          climbName: '#1',
-          grade: 'V5',
-        ),
-      ),
-    );
-
     return Container(
       alignment: Alignment.center,
       padding: EdgeInsets.all(15),
@@ -69,17 +43,23 @@ class SeshCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Text(
-                'Sesh: #1',
+                'Sesh: ${_sesh.id}',
                 style: TextStyle(fontSize: 16),
               ),
-              Text('10/07/2022', style: TextStyle(fontSize: 16)),
+              Text(_sesh.dateTime!.toIso8601String(),
+                  style: TextStyle(fontSize: 16)),
               Text('00:00:00', style: TextStyle(fontSize: 16)),
             ],
           ),
         ),
         Column(
           mainAxisAlignment: MainAxisAlignment.start,
-          children: _climbsList,
+          children: [
+            for (final climb in _sesh.climbs!)
+              ClimbCard(
+                  climbName: climb.climbId.toString(),
+                  grade: climb.grade.toString())
+          ],
         ),
         IconButton(onPressed: () {}, icon: Icon(Icons.more_horiz)),
       ]),

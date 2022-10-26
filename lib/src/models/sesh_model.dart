@@ -17,7 +17,7 @@ class Sesh {
   int? get totalAttempts => _totalAttempts;
   int? get averageGrade => _averageGrade;
   int? get highestGrade => _highestGrade;
-  
+  int? get id => _id;
 
   Sesh({
     int? id,

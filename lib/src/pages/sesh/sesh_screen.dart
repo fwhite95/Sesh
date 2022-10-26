@@ -46,15 +46,15 @@ class _SeshScreenState extends State<SeshScreen> {
           padding: EdgeInsets.all(15),
           child: Column(
             children: [
-              SeshCard(climbsList: []),
-              SizedBox(
-                height: 15,
-              ),
-              SeshCard(climbsList: []),
-              SizedBox(
-                height: 15,
-              ),
-              SeshCard(climbsList: []),
+              // SeshCard(climbsList: []),
+              // SizedBox(
+              //   height: 15,
+              // ),
+              // SeshCard(climbsList: []),
+              // SizedBox(
+              //   height: 15,
+              // ),
+              // SeshCard(climbsList: []),
             ],
           ),
         ),

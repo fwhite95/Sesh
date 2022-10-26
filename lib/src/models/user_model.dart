@@ -43,7 +43,35 @@ class UserModel extends Equatable {
   //       _climbs?.add(Climb.fromJson(v));
   //     });
   //   }
+
   // }
+
+  static UserModel fromJson(Map<String, dynamic>? json) {
+    List<Sesh> seshes = [];
+    List<Climb> climbs = [];
+
+    if (json?['seshes'] != null) {
+      seshes = <Sesh>[];
+      json?['seshes'].forEach((v) {
+        seshes.add(Sesh.fromJson(v));
+      });
+    }
+
+    if (json?['climbs'] != null) {
+      climbs = <Climb>[];
+      json?['climbs'].forEach((v) {
+        climbs.add(Climb.fromJson(v));
+      });
+    }
+
+    return UserModel(
+      email: json?['email'],
+      firstName: json?['first_name'],
+      userId: json?['user_id'],
+      climbs: climbs,
+      seshes: seshes,
+    );
+  }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = {};

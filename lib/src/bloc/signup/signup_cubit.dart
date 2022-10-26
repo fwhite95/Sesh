@@ -1,18 +1,22 @@
 import 'package:bloc/bloc.dart';
 import 'package:climbing_sessions/src/repository/auth_repository.dart';
+import 'package:climbing_sessions/src/repository/user_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 
 import '../../models/confirmed_password.dart';
 import '../../models/email_model.dart';
 import '../../models/password_model.dart';
+import '../../models/user_model.dart';
 
 part 'signup_state.dart';
 
 class SignupCubit extends Cubit<SignupState> {
-  SignupCubit(this._authenticationRepository) : super(const SignupState());
+  SignupCubit(this._authenticationRepository, this._userFbRepository)
+      : super(const SignupState());
 
   final AuthenticationRepository _authenticationRepository;
+  final UserFbRepository _userFbRepository;
 
   void emailChanged(String value) {
     final email = Email.dirty(value);
@@ -80,4 +84,6 @@ class SignupCubit extends Cubit<SignupState> {
       );
     }
   }
+
+ 
 }

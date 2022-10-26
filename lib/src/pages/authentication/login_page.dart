@@ -83,8 +83,8 @@ class _EmailInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginCubit, LoginState>(
-      buildWhen: ((previous, current) => previous.email != current.email),
-      builder: ((context, state) {
+      buildWhen: (previous, current) => previous.email != current.email,
+      builder: (context, state) {
         return TextField(
           key: const Key('loginPage_emailInput_textField'),
           onChanged: (email) => context.read<LoginCubit>().emailChanged(email),
@@ -92,11 +92,11 @@ class _EmailInput extends StatelessWidget {
           decoration: InputDecoration(
             labelText: 'Email',
             helperText: '',
-            errorText: state.email.invalid ? 'invalid email' : null,
+            errorText: state.email.invalid ? 'Invalid email' : null,
             border: OutlineInputBorder(),
           ),
         );
-      }),
+      },
     );
   }
 }
@@ -110,7 +110,7 @@ class _PasswordInput extends StatelessWidget {
         return TextField(
           key: const Key('loginPage_passwordInput_textField'),
           onChanged: (password) =>
-              context.read<LoginCubit>().emailChanged(password),
+              context.read<LoginCubit>().passwordChanged(password),
           obscureText: true,
           decoration: InputDecoration(
             labelText: 'Password',
@@ -128,7 +128,7 @@ class _LoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginCubit, LoginState>(
-      buildWhen: ((previous, current) => previous.status != current.status),
+      buildWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
         return state.status.isSubmissionInProgress
             ? const CircularProgressIndicator()

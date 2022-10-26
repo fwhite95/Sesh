@@ -1,4 +1,5 @@
 import 'package:climbing_sessions/src/repository/auth_repository.dart';
+import 'package:climbing_sessions/src/repository/user_repository.dart';
 import 'package:climbing_sessions/src/util/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,18 +39,22 @@ class _AuthPageState extends State<AuthPage> {
               ),
               initialIndex == 0
                   ? Container(
-                      padding: const EdgeInsets.only(top: 10, bottom: 15, left: 15, right: 15),
+                      padding: const EdgeInsets.only(
+                          top: 10, bottom: 5, left: 15, right: 15),
                       child: BlocProvider(
-                        create: (_) => LoginCubit(context.read<AuthenticationRepository>()),
+                        create: (_) => LoginCubit(
+                            context.read<AuthenticationRepository>()),
                         child: LoginPage(),
-                        ),
+                      ),
                     )
                   : Container(
                       padding: const EdgeInsets.all(10),
                       child: BlocProvider(
-                        create: (_) => SignupCubit(context.read<AuthenticationRepository>()),
+                        create: (_) => SignupCubit(
+                            context.read<AuthenticationRepository>(),
+                            context.read<UserFbRepository>()),
                         child: SignupPage(),
-                        ),
+                      ),
                     ),
               ToggleSwitch(
                 minWidth: 90.0,

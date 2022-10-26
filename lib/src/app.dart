@@ -1,5 +1,6 @@
 import 'package:climbing_sessions/src/repository/auth_repository.dart';
 import 'package:climbing_sessions/src/pages/authentication/auth_page.dart';
+import 'package:climbing_sessions/src/repository/user_repository.dart';
 import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,15 +12,21 @@ class App extends StatelessWidget {
   const App({
     Key? key,
     required AuthenticationRepository authenticationRepository,
+    required UserFbRepository userFbRepository,
   })  : _authenticationRepository = authenticationRepository,
+        _userFbRepository = userFbRepository,
         super(key: key);
 
   final AuthenticationRepository _authenticationRepository;
+  final UserFbRepository _userFbRepository;
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider.value(
-      value: _authenticationRepository,
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider.value(value: _authenticationRepository),
+        RepositoryProvider.value(value: _userFbRepository),
+      ],
       child: BlocProvider(
         create: (_) => AppBloc(
           authenticationRepository: _authenticationRepository,
