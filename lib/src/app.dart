@@ -1,3 +1,6 @@
+import 'package:climbing_sessions/src/bloc/home/home_bloc.dart';
+import 'package:climbing_sessions/src/bloc/sesh/sesh_bloc.dart';
+import 'package:climbing_sessions/src/models/user_model.dart';
 import 'package:climbing_sessions/src/repository/auth_repository.dart';
 import 'package:climbing_sessions/src/pages/authentication/auth_page.dart';
 import 'package:climbing_sessions/src/repository/user_repository.dart';
@@ -27,10 +30,26 @@ class App extends StatelessWidget {
         RepositoryProvider.value(value: _authenticationRepository),
         RepositoryProvider.value(value: _userFbRepository),
       ],
-      child: BlocProvider(
-        create: (_) => AppBloc(
-          authenticationRepository: _authenticationRepository,
-        ),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (_) => AppBloc(
+              authenticationRepository: _authenticationRepository,
+            ),
+          ),
+          BlocProvider(
+            create: (_) => HomeBloc(
+              userFbRepository: _userFbRepository,
+              user: UserModel.empty,
+            ),
+          ),
+          BlocProvider(
+            create: (_) => SeshBloc(
+              userFbRepository: _userFbRepository,
+              user: UserModel.empty
+            ),
+          ),
+        ],
         child: AppView(),
       ),
     );

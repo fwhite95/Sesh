@@ -11,8 +11,9 @@ part 'home_state.dart';
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc({
     required UserFbRepository userFbRepository,
+    required UserModel user
   })  : _userFbRepository = userFbRepository,
-        super(const HomeState()) {
+        super(HomeState(user: user)) {
     on<HomeSubscriptionRequested>(_onSubscriptionRequested);
     on<HomeCreateUserRequested>(_createFbUser);
   }
@@ -44,7 +45,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   ) async {
     emit(state.copyWith(status: () => HomeStatus.loading));
     try {
-      await _userFbRepository.createFirebaseUser(event.user);
+      if (await _userFbRepository.doesUserExist(event.user)) {
+        await _userFbRepository.createFirebaseUser(event.user);
+      }
+
       emit(state.copyWith(
         status: () => HomeStatus.success,
       ));

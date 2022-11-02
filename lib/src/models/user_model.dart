@@ -7,8 +7,7 @@ class UserModel extends Equatable {
     required this.email,
     required this.firstName,
     required this.userId,
-    this.seshes,
-    this.climbs,
+    required this.seshes,
   });
 
   final String? email;
@@ -16,39 +15,10 @@ class UserModel extends Equatable {
   final String? userId;
 
   final List<Sesh>? seshes;
-  final List<Climb>? climbs;
-
-  // List<Sesh>? get seshes => _seshes;
-  // List<Climb>? get climbs => _climbs;
-
-  // String? get email => _email;
-  // String? get firstName => _firstName;
-  // String? get userid => _userId;
-
-  // UserModel.fromJson(Map<String, dynamic> json) {
-  //   email = json['email'];
-  //   firstName = json['first_name'];
-  //   userId = json['user_id'];
-
-  //   if (json['seshes'] != null) {
-  //     _seshes = <Sesh>[];
-  //     json['seshes'].forEach((v) {
-  //       _seshes?.add(Sesh.fromJson(v));
-  //     });
-  //   }
-
-  //   if (json['climbs'] != null) {
-  //     _climbs = <Climb>[];
-  //     json['climbs'].forEach((v) {
-  //       _climbs?.add(Climb.fromJson(v));
-  //     });
-  //   }
-
-  // }
+  
 
   static UserModel fromJson(Map<String, dynamic>? json) {
     List<Sesh> seshes = [];
-    List<Climb> climbs = [];
 
     if (json?['seshes'] != null) {
       seshes = <Sesh>[];
@@ -57,18 +27,10 @@ class UserModel extends Equatable {
       });
     }
 
-    if (json?['climbs'] != null) {
-      climbs = <Climb>[];
-      json?['climbs'].forEach((v) {
-        climbs.add(Climb.fromJson(v));
-      });
-    }
-
     return UserModel(
       email: json?['email'],
       firstName: json?['first_name'],
       userId: json?['user_id'],
-      climbs: climbs,
       seshes: seshes,
     );
   }
@@ -83,15 +45,11 @@ class UserModel extends Equatable {
       data['seshes'] = seshes?.map((v) => v.toJson()).toList();
     }
 
-    if (climbs != null) {
-      data['climbs'] = climbs?.map((v) => v.toJson()).toList();
-    }
-
     return data;
   }
 
   /// Empty user which represents an unauthenticated user
-  static const empty = UserModel(email: '', firstName: '', userId: '');
+  static const empty = UserModel(email: '', firstName: '', userId: '', seshes: []);
 
   /// Convenience getter to determine whether the current user is empty.
   bool get isEmpty => this == UserModel.empty;
@@ -100,5 +58,5 @@ class UserModel extends Equatable {
   bool get isNotEmpty => this != UserModel.empty;
 
   @override
-  List<Object?> get props => [email, firstName, userId, seshes, climbs];
+  List<Object?> get props => [email, firstName, userId, seshes];
 }

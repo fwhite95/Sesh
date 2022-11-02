@@ -22,6 +22,26 @@ class UserFbRepository {
   }
 
   /// Creates the firebase [UserModel]
+  Future<bool> doesUserExist(UserModel user) async {
+    try {
+      await _firebaseFirestore
+          .collection('users')
+          .doc(user.userId)
+          .get()
+          .then((value) {
+        if (value.exists) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+      return false;
+    } catch (e) {
+      throw FirebaseException(
+          plugin: 'createFirebaseUser', message: e.toString());
+    }
+  }
+
   Future<void> createFirebaseUser(UserModel user) async {
     try {
       await _firebaseFirestore

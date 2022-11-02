@@ -5,15 +5,15 @@ enum HomeStatus { initial, loading, success, failure }
 class HomeState extends Equatable {
   const HomeState({
     this.status = HomeStatus.initial,
-    this.user,
+    required this.user,
   });
 
   final HomeStatus status;
-  final UserModel? user;
+  final UserModel user;
 
   HomeState copyWith({
     HomeStatus Function()? status,
-    UserModel? Function()? user,
+    UserModel Function()? user,
   }) {
     return HomeState(
       status: status != null ? status() : this.status,

@@ -9,6 +9,24 @@ abstract class AppEvent extends Equatable {
 
 class AppLogoutRequested extends AppEvent {}
 
+class AppNavToSeshPageRequested extends AppEvent {
+  const AppNavToSeshPageRequested(this.user);
+
+  final UserModel user;
+
+  @override
+  List<Object> get props => [user];
+}
+
+class AppNavToHomePageRequested extends AppEvent {
+  const AppNavToHomePageRequested(this.user);
+
+  final UserModel user;
+
+  @override
+  List<Object> get props => [user];
+}
+
 class AppUserChanged extends AppEvent {
   @visibleForTesting
   const AppUserChanged(this.user);

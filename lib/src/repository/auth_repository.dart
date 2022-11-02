@@ -109,7 +109,8 @@ class AuthenticationRepository {
           : UserModel(
               email: authUser.email,
               firstName: authUser.displayName,
-              userId: authUser.uid);
+              userId: authUser.uid,
+              seshes: []);
       //_cache.write(key: firebaseUser!.uid, value: user);
       //for testing
       _cache.write(key: userCacheKey, value: user);
@@ -167,6 +168,4 @@ class AuthenticationRepository {
       throw LogOutFailure();
     }
   }
-
-  
 }

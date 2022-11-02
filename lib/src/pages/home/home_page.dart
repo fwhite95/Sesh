@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc/app/app_bloc.dart';
+import '../sesh/sesh_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -16,15 +17,15 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authUser = context.select((AppBloc bloc) => bloc.state.user);
+    final user = context.select((AppBloc bloc) => bloc.state.user);
     return BlocProvider(
-      create: (context) => HomeBloc(
-        userFbRepository: context.read<UserFbRepository>(),
-      )
-        ..add(HomeCreateUserRequested(authUser))
-        ..add(HomeSubscriptionRequested(authUser)),
-      child: const HomeView(),
-    );
+        create: (context) => HomeBloc(
+              userFbRepository: context.read<UserFbRepository>(),
+              user: user,
+            )
+              ..add(HomeCreateUserRequested(user))
+              ..add(HomeSubscriptionRequested(user)),
+        child: const HomeView());
   }
 }
 
@@ -44,12 +45,14 @@ class _HomeViewState extends State<HomeView> {
         backgroundColor: AppColors.green,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => context.read<AppBloc>().add(AppLogoutRequested()),
+        onPressed: () {
+          context.read<AppBloc>().add(AppLogoutRequested());
+        },
         child: Icon(Icons.add),
         backgroundColor: AppColors.green,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      bottomNavigationBar: SeshBottomNavBar(),
+      bottomNavigationBar: const SeshBottomNavBar(),
       body: MultiBlocListener(
         listeners: [
           BlocListener<HomeBloc, HomeState>(

@@ -105,8 +105,8 @@ class _PasswordInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginCubit, LoginState>(
-      buildWhen: ((previous, current) => previous.password != current.password),
-      builder: ((context, state) {
+      buildWhen: (previous, current) => previous.password != current.password,
+      builder: (context, state) {
         return TextField(
           key: const Key('loginPage_passwordInput_textField'),
           onChanged: (password) =>
@@ -119,7 +119,7 @@ class _PasswordInput extends StatelessWidget {
             border: OutlineInputBorder(),
           ),
         );
-      }),
+      },
     );
   }
 }

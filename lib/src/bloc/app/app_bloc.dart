@@ -20,6 +20,8 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         ) {
     on<AppUserChanged>(_onUserChanged);
     on<AppLogoutRequested>(_onLogoutRequested);
+    on<AppNavToSeshPageRequested>(_onNavToSeshPageRequested);
+    on<AppNavToHomePageRequested>(_onNavToHomePageRequested);
     _userSubscription = _authenticationRepository.user.listen(
       (user) => add(AppUserChanged(user)),
     );
@@ -40,7 +42,17 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     unawaited(_authenticationRepository.logOut());
   }
 
-  @override 
+  void _onNavToSeshPageRequested(
+      AppNavToSeshPageRequested event, Emitter<AppState> emit) {
+    emit(AppState._(status: AppStatus.sesh, user: event.user));
+  }
+
+  void _onNavToHomePageRequested(
+      AppNavToHomePageRequested event, Emitter<AppState> emit) {
+    emit(AppState._(status: AppStatus.home, user: event.user));
+  }
+
+  @override
   Future<void> close() {
     _userSubscription.cancel();
     return super.close();
