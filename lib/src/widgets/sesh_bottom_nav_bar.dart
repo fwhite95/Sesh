@@ -15,7 +15,7 @@ class SeshBottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    late UserModel user;
+    //late UserModel user;
     return BottomAppBar(
       color: AppColors.green,
       shape: CircularNotchedRectangle(),

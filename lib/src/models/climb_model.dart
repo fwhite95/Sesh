@@ -1,31 +1,28 @@
-class Climb {
-  int? climbId;
-  int? attempts;
-  int? grade;
-  bool? completed;
-  String? note;
+import 'package:equatable/equatable.dart';
 
-  Climb({
-    int? climbId,
-    int? attempts = 0,
-    int? grade = 0,
-    bool? completed = false,
-    String? note,
-  }) {
-    this.climbId = climbId;
-    this.attempts = attempts;
-    this.grade = grade;
-    this.completed = completed;
-    this.note = note;
-  }
+class Climb extends Equatable {
+  const Climb({
+    this.climbId = 1,
+    this.attempts = 1,
+    this.grade = '',
+    this.completed = false,
+    this.note = '',
+  });
 
+  final int? climbId;
+  final int? attempts;
+  final String? grade;
+  final bool? completed;
+  final String? note;
 
-  Climb.fromJson(Map<String, dynamic> json) {
-    climbId = json['climb_id'];
-    attempts = json['attempts'];
-    grade = json['grade'];
-    completed = json['completed'];
-    note = json['note'];
+  static Climb fromJson(Map<String, dynamic> json) {
+    return Climb(
+      climbId: json['climb_id'],
+      attempts: json['attempts'],
+      grade: json['grade'],
+      completed: json['completed'],
+      note: json['note'],
+    );
   }
 
   Map<String, dynamic> toJson() {
@@ -38,4 +35,7 @@ class Climb {
 
     return data;
   }
+
+  @override
+  List<Object?> get props => [climbId, attempts, grade, completed, note];
 }

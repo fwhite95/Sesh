@@ -1,4 +1,4 @@
-part of 'new_climb_bloc.dart';
+part of 'new_climb_cubit.dart';
 
 @immutable
 abstract class NewClimbState {}

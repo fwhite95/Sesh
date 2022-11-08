@@ -1,5 +1,6 @@
 import 'package:climbing_sessions/src/bloc/app/app_bloc.dart';
 import 'package:climbing_sessions/src/bloc/sesh/sesh_bloc.dart';
+import 'package:climbing_sessions/src/pages/sesh/new_sesh_page.dart';
 import 'package:climbing_sessions/src/repository/user_repository.dart';
 import 'package:climbing_sessions/src/util/colors.dart';
 import 'package:climbing_sessions/src/widgets/sesh_bottom_nav_bar.dart';
@@ -17,7 +18,6 @@ class SeshPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //final user = context.select((HomeBloc bloc) => bloc.state.user);
     final user = context.select((AppBloc bloc) => bloc.state.user);
     print('user $user');
     return BlocProvider(
@@ -62,6 +62,8 @@ class _SeshViewState extends State<SeshView> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           /// Navigate to [NewSeshPage]
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const NewSeshPage()));
         },
         child: Icon(Icons.add),
         backgroundColor: AppColors.green,

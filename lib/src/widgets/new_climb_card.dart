@@ -1,13 +1,14 @@
 import 'package:climbing_sessions/src/util/colors.dart';
+import 'package:climbing_sessions/src/util/constants.dart';
 import 'package:flutter/material.dart';
 
-class NewClimbCard extends StatefulWidget {
-  final String seshId;
-  final String grade;
+import '../models/climb_model.dart';
 
-  NewClimbCard({Key? key, required String seshId, required String grade})
-      : this.seshId = seshId,
-        this.grade = grade,
+class NewClimbCard extends StatefulWidget {
+  final Climb climb;
+
+  NewClimbCard({Key? key, required Climb climb})
+      : this.climb = climb,
         super(key: key);
 
   @override
@@ -15,19 +16,19 @@ class NewClimbCard extends StatefulWidget {
 }
 
 class _NewClimbCardState extends State<NewClimbCard> {
-  String attempts = '1';
-
   @override
   void initState() {
     super.initState();
   }
 
+  String dropdownValue = vGrade.first;
+
   @override
   Widget build(BuildContext context) {
-    attempts = '1';
     return Container(
       alignment: Alignment.center,
       padding: EdgeInsets.all(15),
+      margin: EdgeInsets.all(10),
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
           boxShadow: [
@@ -58,13 +59,33 @@ class _NewClimbCardState extends State<NewClimbCard> {
               Padding(
                 padding: const EdgeInsets.all(5.0),
                 child: Text(
-                  'Sesh: #${widget.seshId}',
+                  'Climb: #${widget.climb.climbId}',
                   style: TextStyle(fontSize: 16),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(5.0),
-                child: Text('Grade: ${widget.grade}', style: TextStyle(fontSize: 16)),
+                child: DropdownButton<String>(
+                  value: dropdownValue,
+                  icon: const Icon(Icons.arrow_downward),
+                  elevation: 16,
+                  underline: Container(
+                    height: 1,
+                    color: Colors.black,
+                  ),
+                  onChanged: (String? value) {
+                    // This is called when the user selects an item.
+                    setState(() {
+                      dropdownValue = value!;
+                    });
+                  },
+                  items: vGrade.map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
               ),
             ],
           ),
@@ -83,7 +104,8 @@ class _NewClimbCardState extends State<NewClimbCard> {
               ),
               Padding(
                 padding: const EdgeInsets.all(3.0),
-                child: Text(attempts, style: TextStyle(fontWeight: FontWeight.bold)),
+                child: Text(widget.climb.attempts.toString(),
+                    style: TextStyle(fontWeight: FontWeight.bold)),
               ),
               Padding(
                 padding: const EdgeInsets.all(3.0),

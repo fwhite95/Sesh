@@ -1,53 +1,53 @@
 import 'package:climbing_sessions/src/models/climb_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:equatable/equatable.dart';
 
-class Sesh {
-  String? _id;
-  DateTime? _dateTime;
-  String? _seshLength;
+class Sesh extends Equatable{
+  const Sesh({
+    required this.id,
+    this.dateTime,
+    required this.seshLength,
+    required this.climbs,
+  });
 
-  List<Climb>? _climbs;
-  List<Climb>? get climbs => _climbs;
+  final String? id;
+  final DateTime? dateTime;
+  final String? seshLength;
+  final List<Climb>? climbs;
 
-  String? get id => _id;
-  DateTime? get dateTime => _dateTime;
-  String? get seshTIme => _seshLength;
-
-  Sesh({
-    String? id,
-    DateTime? dateTime,
-    String? seshLength,
-    List<Climb>? climbs,
-  }) {
-    _id = id;
-    _dateTime = dateTime;
-    _seshLength = seshLength;
-    _climbs = climbs;
-  }
-
-  Sesh.fromJson(Map<String, dynamic> json) {
-    _id = json['id'];
-    _dateTime = (json['date_time'] as Timestamp).toDate();
-    _seshLength = json['sesh_length'];
+  static Sesh fromJson(Map<String, dynamic> json) {
+    List<Climb> climbs = [];
 
     if (json['climbs'] != null) {
-      _climbs = <Climb>[];
       json['climbs'].forEach((v) {
-        _climbs?.add(Climb.fromJson(v));
+        climbs.add(Climb.fromJson(v));
       });
     }
+
+    return Sesh(
+        id: json['id'],
+        dateTime: (json['date_time'] as Timestamp).toDate(),
+        seshLength: json['sesh_length'],
+        climbs: climbs,
+        );
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
-    data['id'] = _id;
-    data['date_time'] = _dateTime;
-    data['sesh_length'] = _seshLength;
+    data['id'] = id;
+    data['date_time'] = dateTime;
+    data['sesh_length'] = seshLength;
 
-    if (_climbs != null) {
-      data['climbs'] = _climbs?.map((v) => v.toJson()).toList();
+    if (climbs != null) {
+      data['climbs'] = climbs?.map((v) => v.toJson()).toList();
     }
 
     return data;
   }
+
+  /// Empty sesh model for when a new sesh is started
+  static const empty = Sesh(id: '', seshLength: '', climbs: []);
+
+  @override
+  List<Object?> get props => [id, dateTime, seshLength, climbs];
 }
