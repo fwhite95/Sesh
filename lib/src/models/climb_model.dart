@@ -2,11 +2,11 @@ import 'package:equatable/equatable.dart';
 
 class Climb extends Equatable {
   const Climb({
-    this.climbId = 1,
-    this.attempts = 1,
-    this.grade = '',
-    this.completed = false,
-    this.note = '',
+    required this.climbId,
+    required this.attempts,
+    required this.grade,
+    this.completed,
+    this.note,
   });
 
   final int? climbId;
@@ -35,6 +35,9 @@ class Climb extends Equatable {
 
     return data;
   }
+
+  /// Empty climb for when a new climb is created
+  static const empty = Climb(climbId: 1, grade: 'V0', attempts: 0);
 
   @override
   List<Object?> get props => [climbId, attempts, grade, completed, note];

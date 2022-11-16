@@ -1,6 +1,6 @@
 part of 'sesh_bloc.dart';
 
-enum SeshStatus { initial, loading, success, failure, navigate }
+enum SeshStatus { initial, loading, success, failure, navigate}
 
 class SeshState extends Equatable {
   const SeshState({

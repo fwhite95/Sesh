@@ -56,6 +56,7 @@ class UserFbRepository {
 
   /// Saves the [UserModel]
   Future<void> updateFirebaseUser(UserModel user) async {
+    print('USER FROM REPO: $user');
     try {
       await _firebaseFirestore
           .collection('users')

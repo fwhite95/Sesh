@@ -22,6 +22,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     on<AppLogoutRequested>(_onLogoutRequested);
     on<AppNavToSeshPageRequested>(_onNavToSeshPageRequested);
     on<AppNavToHomePageRequested>(_onNavToHomePageRequested);
+    on<AppNavToNewSeshPageRequested>(_onNavToNewSeshPageRequested);
     _userSubscription = _authenticationRepository.user.listen(
       (user) => add(AppUserChanged(user)),
     );
@@ -50,6 +51,11 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   void _onNavToHomePageRequested(
       AppNavToHomePageRequested event, Emitter<AppState> emit) {
     emit(AppState._(status: AppStatus.home, user: event.user));
+  }
+
+  void _onNavToNewSeshPageRequested(
+      AppNavToNewSeshPageRequested event, Emitter<AppState> emit) {
+    emit(AppState._(status: AppStatus.newSesh, user: event.user));
   }
 
   @override

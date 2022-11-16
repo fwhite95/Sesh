@@ -27,6 +27,15 @@ class AppNavToHomePageRequested extends AppEvent {
   List<Object> get props => [user];
 }
 
+class AppNavToNewSeshPageRequested extends AppEvent {
+  const AppNavToNewSeshPageRequested(this.user);
+
+  final UserModel user;
+
+  @override
+  List<Object> get props => [user];
+}
+
 class AppUserChanged extends AppEvent {
   @visibleForTesting
   const AppUserChanged(this.user);

@@ -1,4 +1,5 @@
 import 'package:climbing_sessions/src/bloc/app/app_bloc.dart';
+import 'package:climbing_sessions/src/bloc/new_climb/new_climb_bloc.dart';
 import 'package:climbing_sessions/src/bloc/new_sesh/new_sesh_bloc.dart';
 import 'package:climbing_sessions/src/bloc/sesh/sesh_bloc.dart';
 import 'package:climbing_sessions/src/models/climb_model.dart';
@@ -17,8 +18,8 @@ class NewSeshPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = context.select((SeshBloc bloc) => bloc.state.user);
-    print('newSeshPage');
+    final user = context.select((AppBloc bloc) => bloc.state.user);
+    print('newSeshPage user: $user');
     return BlocProvider(
       create: (context) => NewSeshBloc(
           userFbRepository: context.read<UserFbRepository>(), user: user),
@@ -44,6 +45,7 @@ class _NewSeshViewState extends State<NewSeshView> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -58,28 +60,31 @@ class _NewSeshViewState extends State<NewSeshView> {
         backgroundColor: AppColors.green,
       ),
       backgroundColor: AppColors.orange,
-      body: BlocListener<NewSeshBloc, NewSeshState>(
-        listenWhen: (previous, current) => previous.status != current.status,
-        listener: (context, state) {
-          if (state.status == NewSeshStatus.failure) {
-            ScaffoldMessenger.of(context)
-              ..hideCurrentSnackBar()
-              ..showSnackBar(
-                SnackBar(
-                  content: Text('Error retrieving user'),
-                ),
-              );
-          }
-        },
+      body: MultiBlocListener(
+        listeners: [
+          BlocListener<NewSeshBloc, NewSeshState>(
+            listenWhen: (previous, current) =>
+                previous.status != current.status,
+            listener: (context, state) async {
+              if (state.status == NewSeshStatus.failure) {
+                ScaffoldMessenger.of(context)
+                  ..hideCurrentSnackBar()
+                  ..showSnackBar(
+                    SnackBar(
+                      content: Text('Error retrieving user'),
+                    ),
+                  );
+              }
+            },
+          ),
+        ],
         child: BlocBuilder<NewSeshBloc, NewSeshState>(
           builder: (context, state) {
+            print('from NewSeshBlocBuilder: ${state.user}');
             if (state.status == NewSeshStatus.loading) {
               return const Center(
                 child: CircularProgressIndicator(),
               );
-            } else if (state.status != NewSeshStatus.success) {
-              print('status : ${state.status}');
-              return const SizedBox();
             } else {
               return Container(
                 child: Column(
@@ -93,7 +98,7 @@ class _NewSeshViewState extends State<NewSeshView> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text('Sesh #1', style: TextStyle(fontSize: 16)),
-                                Text('10/07/2022',
+                                Text('${state.sesh.dateTime ?? '11/13/2022'} ',
                                     style: TextStyle(fontSize: 16)),
                               ],
                             ),
@@ -132,12 +137,33 @@ class _NewSeshViewState extends State<NewSeshView> {
                                     /// Needs to be sorted by id, or turned from list
                                     /// into a
                                     for (final climb in state.sesh.climbs!)
-                                      NewClimbCard(
-                                        climb: climb,
+                                      BlocProvider(
+                                        create: (context) =>
+                                            NewClimbBloc(initialClimb: climb),
+                                        child: NewClimbCard(
+                                          climb: climb,
+                                        ),
                                       ),
                                   ],
                                 ),
                               ),
+                      ),
+                    ),
+                    Container(
+                      child: ElevatedButton(
+                        child: Text('Finish Sesh'),
+                        onPressed: () async {
+                          context
+                              .read<NewSeshBloc>()
+                              .add(NewSeshSaveSeshRequested(state.user));
+                          context.read<AppBloc>().add(AppNavToHomePageRequested(state.user));
+                        },
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30)),
+                          backgroundColor: AppColors.green,
+                          minimumSize: Size(180, 40),
+                        ),
                       ),
                     ),
                   ],

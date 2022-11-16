@@ -5,6 +5,7 @@ enum AppStatus {
   unauthenticated,
   sesh,
   home,
+  newSesh
 }
 
 class AppState extends Equatable {

@@ -5,6 +5,7 @@ import 'package:climbing_sessions/src/models/climb_model.dart';
 import 'package:climbing_sessions/src/models/user_model.dart';
 import 'package:climbing_sessions/src/pages/sesh/new_sesh_page.dart';
 import 'package:climbing_sessions/src/repository/user_repository.dart';
+import 'package:climbing_sessions/src/util/constants.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
@@ -31,14 +32,12 @@ class NewSeshBloc extends Bloc<NewSeshEvent, NewSeshState> {
     Emitter<NewSeshState> emit,
   ) async {
     emit(state.copyWith(status: () => NewSeshStatus.loading));
-    ListQueue<Climb>? climbs = ListQueue<Climb>();
+    List<Climb> climbs = [];
     state.sesh.climbs!.forEach((c) {
       climbs.add(c);
     });
-    climbs.addFirst(Climb(
-      climbId: climbs.length + 1
-    ));
-    
+    climbs.add(
+        Climb(climbId: climbs.length + 1, grade: vGrade.first, attempts: 0));
 
     emit(state.copyWith(
       status: () => NewSeshStatus.success,
@@ -46,7 +45,7 @@ class NewSeshBloc extends Bloc<NewSeshEvent, NewSeshState> {
         id: state.sesh.id,
         dateTime: state.sesh.dateTime,
         seshLength: state.sesh.seshLength,
-        climbs: climbs.toList(),
+        climbs: climbs,
       ),
     ));
   }
@@ -62,13 +61,69 @@ class NewSeshBloc extends Bloc<NewSeshEvent, NewSeshState> {
     NewSeshUpdateClimbAttemptsRequested event,
     Emitter<NewSeshState> emit,
   ) async {
+    /// ToDo: not updating the correct climb because
+    /// the climbId's from the list and the event do not
+    /// match
     emit(state.copyWith(status: () => NewSeshStatus.loading));
+
+    state.sesh.climbs!.forEach((c) {
+      if (c.climbId == event.climb.climbId) {
+        int i = state.sesh.climbs!.indexOf(c);
+        state.sesh.climbs![i] = event.climb;
+        //climbs.add(event.climb);
+      }
+    });
+    //climbs.sort((a, b) => b.climbId!.compareTo(a.climbId!.toInt()));
+
+    emit(state.copyWith(
+      status: () => NewSeshStatus.success,
+      sesh: () => Sesh(
+        id: state.sesh.id,
+        dateTime: state.sesh.dateTime,
+        seshLength: state.sesh.seshLength,
+        climbs: state.sesh.climbs,
+      ),
+    ));
   }
 
   Future<void> _saveSesh(
     NewSeshSaveSeshRequested event,
     Emitter<NewSeshState> emit,
   ) async {
+    print('_saveSesh newSeshBloc');
     emit(state.copyWith(status: () => NewSeshStatus.loading));
+    try {
+      List<Sesh> seshList = [];
+      state.user.seshes?.forEach((s) {
+        seshList.add(s);
+      });
+      seshList.add(state.sesh);
+      print('seshList: $seshList');
+      state.copyWith(
+        user: () => UserModel(
+            email: state.user.email,
+            firstName: state.user.firstName,
+            userId: state.user.userId,
+            seshes: seshList),
+      );
+      UserModel updatedUser = UserModel(
+          email: state.user.email,
+          firstName: state.user.firstName,
+          userId: state.user.userId,
+          seshes: seshList);
+
+      print('newUserModel  ${updatedUser}');
+
+      await _userFbRepository.updateFirebaseUser(updatedUser);
+      emit(state.copyWith(
+        status: () => NewSeshStatus.success,
+        user: () => updatedUser
+      ));
+    } catch (_) {
+      print(_.toString());
+      emit(state.copyWith(
+        status: () => NewSeshStatus.failure,
+      ));
+    }
   }
 }

@@ -17,7 +17,7 @@ class SeshBloc extends Bloc<SeshEvent, SeshState> {
         super(SeshState(user: user)) {
     on<SeshUserSubscriptionRequested>(_onSubscriptionRequested);
     on<SeshDeleteSesh>(_deleteSesh);
-  }
+}
 
   final UserFbRepository _userFbRepository;
 

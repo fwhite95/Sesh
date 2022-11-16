@@ -39,6 +39,7 @@ class SeshView extends StatefulWidget {
 class _SeshViewState extends State<SeshView> {
   @override
   Widget build(BuildContext context) {
+    final user = context.select((AppBloc bloc) => bloc.state.user);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -62,8 +63,8 @@ class _SeshViewState extends State<SeshView> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           /// Navigate to [NewSeshPage]
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const NewSeshPage()));
+          print('onPressed user??? $user');
+          context.read<AppBloc>().add(AppNavToNewSeshPageRequested(user));
         },
         child: Icon(Icons.add),
         backgroundColor: AppColors.green,
@@ -85,6 +86,8 @@ class _SeshViewState extends State<SeshView> {
         },
         child: BlocBuilder<SeshBloc, SeshState>(
           builder: (context, state) {
+            print('state.user from sesh inside blocBuilder: ${state.user}');
+
             if (state.status == HomeStatus.loading) {
               return const Center(
                 child: CircularProgressIndicator(),

@@ -21,4 +21,13 @@ class NewSeshUpdateClimbAttemptsRequested extends NewSeshEvent {
   List<Object> get props => [climb];
 }
 
-class NewSeshSaveSeshRequested extends NewSeshEvent {}
+class NewSeshSaveSeshRequested extends NewSeshEvent {
+  const NewSeshSaveSeshRequested(this.user);
+
+  final UserModel user;
+
+  @override
+  List<Object> get props => [user];
+}
+
+

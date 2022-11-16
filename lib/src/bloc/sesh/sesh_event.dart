@@ -1,10 +1,10 @@
 part of 'sesh_bloc.dart';
 
 @immutable
-abstract class SeshEvent extends Equatable{
+abstract class SeshEvent extends Equatable {
   const SeshEvent();
 
-  @override 
+  @override
   List<Object> get props => [];
 }
 
@@ -26,3 +26,5 @@ class SeshDeleteSesh extends SeshEvent {
   @override
   List<Object> get props => [user, sesh];
 }
+
+
