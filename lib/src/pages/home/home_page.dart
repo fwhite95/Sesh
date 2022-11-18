@@ -18,6 +18,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = context.select((AppBloc bloc) => bloc.state.user);
+    
     return BlocProvider(
         create: (context) => HomeBloc(
               userFbRepository: context.read<UserFbRepository>(),
@@ -39,6 +40,7 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
+    final user = context.select((HomeBloc bloc) => bloc.state.user);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -46,7 +48,7 @@ class _HomeViewState extends State<HomeView> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          context.read<AppBloc>().add(AppLogoutRequested());
+          context.read<AppBloc>().add(AppNavToNewSeshPageRequested(user));
         },
         child: Icon(Icons.add),
         backgroundColor: AppColors.green,
@@ -99,10 +101,11 @@ class _HomeViewState extends State<HomeView> {
                           top: 10, left: 40, right: 40, bottom: 10),
                       child: Column(children: [
                         for (final sesh in state.user.seshes!)
-                          SeshCard(sesh: sesh),
-                        SizedBox(
-                          height: 10,
-                        )
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 8.0),
+                            child: SeshCard(sesh: sesh),
+                          ),
+                        
                       ]),
                     ),
                   ]),

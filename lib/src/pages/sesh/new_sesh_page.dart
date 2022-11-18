@@ -45,7 +45,6 @@ class _NewSeshViewState extends State<NewSeshView> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -153,10 +152,16 @@ class _NewSeshViewState extends State<NewSeshView> {
                       child: ElevatedButton(
                         child: Text('Finish Sesh'),
                         onPressed: () async {
+                          print(
+                              'state.user from finish sesh onPressed. before .add: ${state.user}');
                           context
                               .read<NewSeshBloc>()
                               .add(NewSeshSaveSeshRequested(state.user));
-                          context.read<AppBloc>().add(AppNavToHomePageRequested(state.user));
+                          print(
+                              'state.user from finish sesh onPressed, after .add before nav: ${state.user}');
+                          context
+                              .read<AppBloc>()
+                              .add(AppNavToHomePageRequested(state.user));
                         },
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(

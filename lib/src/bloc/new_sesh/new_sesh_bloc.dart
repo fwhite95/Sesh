@@ -98,7 +98,7 @@ class NewSeshBloc extends Bloc<NewSeshEvent, NewSeshState> {
         seshList.add(s);
       });
       seshList.add(state.sesh);
-      print('seshList: $seshList');
+      print('seshList from newSeshBloc: $seshList');
       state.copyWith(
         user: () => UserModel(
             email: state.user.email,
@@ -112,7 +112,7 @@ class NewSeshBloc extends Bloc<NewSeshEvent, NewSeshState> {
           userId: state.user.userId,
           seshes: seshList);
 
-      print('newUserModel  ${updatedUser}');
+      print('newUserModel  $updatedUser');
 
       await _userFbRepository.updateFirebaseUser(updatedUser);
       emit(state.copyWith(

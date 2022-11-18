@@ -19,7 +19,7 @@ class SeshPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = context.select((AppBloc bloc) => bloc.state.user);
-    print('user $user');
+    print('sesh page user before BlocProvider: $user');
     return BlocProvider(
       create: (context) => SeshBloc(
           userFbRepository: context.read<UserFbRepository>(), user: user)
@@ -39,7 +39,8 @@ class SeshView extends StatefulWidget {
 class _SeshViewState extends State<SeshView> {
   @override
   Widget build(BuildContext context) {
-    final user = context.select((AppBloc bloc) => bloc.state.user);
+    final user = context.select((SeshBloc bloc) => bloc.state.user);
+    print('user from SeshViewState build: $user');
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -57,13 +58,14 @@ class _SeshViewState extends State<SeshView> {
           ),
         ),
         actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.menu)),
+          IconButton(onPressed: () {
+            context.read<AppBloc>().add(AppLogoutRequested());
+          }, icon: Icon(Icons.menu)),
         ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           /// Navigate to [NewSeshPage]
-          print('onPressed user??? $user');
           context.read<AppBloc>().add(AppNavToNewSeshPageRequested(user));
         },
         child: Icon(Icons.add),
@@ -86,7 +88,6 @@ class _SeshViewState extends State<SeshView> {
         },
         child: BlocBuilder<SeshBloc, SeshState>(
           builder: (context, state) {
-            print('state.user from sesh inside blocBuilder: ${state.user}');
 
             if (state.status == HomeStatus.loading) {
               return const Center(
@@ -110,7 +111,10 @@ class _SeshViewState extends State<SeshView> {
                       : Column(
                           children: [
                             for (final sesh in state.user.seshes!)
-                              SeshCard(sesh: sesh),
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 8.0),
+                                child: SeshCard(sesh: sesh),
+                              ),
                           ],
                         ),
                 ),

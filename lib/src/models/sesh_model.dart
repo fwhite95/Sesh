@@ -26,7 +26,7 @@ class Sesh extends Equatable{
 
     return Sesh(
         id: json['id'],
-        dateTime: (json['date_time'] as Timestamp).toDate(),
+        //dateTime: (json['date_time'] as Timestamp).toDate(),
         seshLength: json['sesh_length'],
         climbs: climbs,
         );

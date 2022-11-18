@@ -40,13 +40,13 @@ class SeshCard extends StatelessWidget {
         Container(
           padding: EdgeInsets.only(bottom: 10, top: 10),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Text(
                 'Sesh: ${_sesh.id}',
                 style: TextStyle(fontSize: 16),
               ),
-              Text(_sesh.dateTime!.toIso8601String(),
+              Text('11/17/2022', //_sesh.dateTime!.toIso8601String(),
                   style: TextStyle(fontSize: 16)),
               Text('00:00:00', style: TextStyle(fontSize: 16)),
             ],

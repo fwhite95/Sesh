@@ -17,7 +17,7 @@ class SeshBloc extends Bloc<SeshEvent, SeshState> {
         super(SeshState(user: user)) {
     on<SeshUserSubscriptionRequested>(_onSubscriptionRequested);
     on<SeshDeleteSesh>(_deleteSesh);
-}
+  }
 
   final UserFbRepository _userFbRepository;
 
@@ -26,7 +26,7 @@ class SeshBloc extends Bloc<SeshEvent, SeshState> {
     Emitter<SeshState> emit,
   ) async {
     emit(state.copyWith(status: () => SeshStatus.loading));
-
+    print('seshBloc user: ${event.user.userId}');
     await emit.forEach<UserModel>(
       _userFbRepository.getUser(event.user.userId!),
       onData: (user) => state.copyWith(
@@ -50,7 +50,7 @@ class SeshBloc extends Bloc<SeshEvent, SeshState> {
       /// without an existing sesh to remove
       event.user.seshes!.remove(event.sesh);
       await _userFbRepository.updateFirebaseUser(event.user);
-    emit(state.copyWith(
+      emit(state.copyWith(
         status: () => SeshStatus.success,
       ));
     } catch (_) {
