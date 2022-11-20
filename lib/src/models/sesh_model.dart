@@ -11,7 +11,7 @@ class Sesh extends Equatable{
   });
 
   final String? id;
-  final DateTime? dateTime;
+  final String? dateTime;
   final String? seshLength;
   final List<Climb>? climbs;
 
@@ -26,7 +26,7 @@ class Sesh extends Equatable{
 
     return Sesh(
         id: json['id'],
-        //dateTime: (json['date_time'] as Timestamp).toDate(),
+        dateTime: json['date_time'],
         seshLength: json['sesh_length'],
         climbs: climbs,
         );

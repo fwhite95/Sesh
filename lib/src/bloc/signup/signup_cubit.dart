@@ -18,6 +18,17 @@ class SignupCubit extends Cubit<SignupState> {
   final AuthenticationRepository _authenticationRepository;
   final UserFbRepository _userFbRepository;
 
+  void firstNameChanged(String value) {
+    emit(state.copyWith(
+      firstName: value,
+      status: Formz.validate([
+        state.email,
+        state.password,
+        state.confirmedPassword,
+      ]),
+    ));
+  }
+
   void emailChanged(String value) {
     final email = Email.dirty(value);
     emit(state.copyWith(
@@ -66,8 +77,15 @@ class SignupCubit extends Cubit<SignupState> {
     if (!state.status.isValidated) return;
     emit(state.copyWith(status: FormzStatus.submissionInProgress));
     try {
-      await _authenticationRepository.signUp(
+      final authUser = await _authenticationRepository.signUp(
           email: state.email.value, password: state.password.value);
+
+      final user = UserModel(
+          email: authUser.user!.email,
+          firstName: state.firstName,
+          userId: authUser.user!.uid,
+          seshes: []);
+      await _userFbRepository.createFirebaseUser(user);
       emit(state.copyWith(status: FormzStatus.submissionSuccess));
     } on SignUpWithEmailAndPasswordFailure catch (e) {
       emit(
@@ -84,6 +102,4 @@ class SignupCubit extends Cubit<SignupState> {
       );
     }
   }
-
- 
 }

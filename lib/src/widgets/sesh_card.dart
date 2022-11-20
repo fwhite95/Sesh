@@ -46,21 +46,35 @@ class SeshCard extends StatelessWidget {
                 'Sesh: ${_sesh.id}',
                 style: TextStyle(fontSize: 16),
               ),
-              Text('11/17/2022', //_sesh.dateTime!.toIso8601String(),
+              Text(_sesh.dateTime!,
                   style: TextStyle(fontSize: 16)),
               Text('00:00:00', style: TextStyle(fontSize: 16)),
             ],
           ),
         ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            for (final climb in _sesh.climbs!)
-              ClimbCard(
-                  climbName: climb.climbId.toString(),
-                  grade: climb.grade.toString())
-          ],
-        ),
+        _sesh.climbs!.length < 5
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  for (final climb in _sesh.climbs!)
+                    ClimbCard(
+                      climbName: climb.climbId.toString(),
+                      grade: climb.grade.toString(),
+                      attempts: climb.attempts.toString(),
+                    )
+                ],
+              )
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  for (int i = 0; i < 5; i++)
+                    ClimbCard(
+                      climbName: _sesh.climbs![i].climbId.toString(),
+                      grade: _sesh.climbs![i].grade.toString(),
+                      attempts: _sesh.climbs![i].attempts.toString(),
+                    )
+                ],
+              ),
         IconButton(onPressed: () {}, icon: Icon(Icons.more_horiz)),
       ]),
     );
@@ -68,13 +82,19 @@ class SeshCard extends StatelessWidget {
 }
 
 class ClimbCard extends StatelessWidget {
-  ClimbCard({Key? key, required String climbName, required String grade})
+  ClimbCard(
+      {Key? key,
+      required String climbName,
+      required String grade,
+      required String attempts})
       : _climbName = climbName,
         _grade = grade,
+        _attempts = attempts,
         super(key: key);
 
   final String _climbName;
   final String _grade;
+  final String _attempts;
 
   @override
   Widget build(BuildContext context) {
@@ -90,6 +110,10 @@ class ClimbCard extends StatelessWidget {
               width: 15,
             ),
             Text('Grade: $_grade'),
+            SizedBox(
+              width: 15,
+            ),
+            Text('Attempts: $_attempts'),
           ],
         ));
   }

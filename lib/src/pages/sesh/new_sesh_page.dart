@@ -19,10 +19,10 @@ class NewSeshPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = context.select((AppBloc bloc) => bloc.state.user);
-    print('newSeshPage user: $user');
     return BlocProvider(
       create: (context) => NewSeshBloc(
-          userFbRepository: context.read<UserFbRepository>(), user: user),
+          userFbRepository: context.read<UserFbRepository>(), user: user)
+        ..add(NewSeshStarted()),
       child: const NewSeshView(),
     );
   }
@@ -79,7 +79,6 @@ class _NewSeshViewState extends State<NewSeshView> {
         ],
         child: BlocBuilder<NewSeshBloc, NewSeshState>(
           builder: (context, state) {
-            print('from NewSeshBlocBuilder: ${state.user}');
             if (state.status == NewSeshStatus.loading) {
               return const Center(
                 child: CircularProgressIndicator(),
@@ -97,7 +96,7 @@ class _NewSeshViewState extends State<NewSeshView> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text('Sesh #1', style: TextStyle(fontSize: 16)),
-                                Text('${state.sesh.dateTime ?? '11/13/2022'} ',
+                                Text(state.sesh.dateTime ?? '',
                                     style: TextStyle(fontSize: 16)),
                               ],
                             ),

@@ -7,6 +7,7 @@ import 'package:climbing_sessions/src/pages/sesh/new_sesh_page.dart';
 import 'package:climbing_sessions/src/repository/user_repository.dart';
 import 'package:climbing_sessions/src/util/constants.dart';
 import 'package:equatable/equatable.dart';
+import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 
 import '../../models/sesh_model.dart';
@@ -23,9 +24,31 @@ class NewSeshBloc extends Bloc<NewSeshEvent, NewSeshState> {
     on<NewSeshDeleteClimbRequested>(_deleteClimb);
     on<NewSeshUpdateClimbAttemptsRequested>(_updateClimb);
     on<NewSeshSaveSeshRequested>(_saveSesh);
+    on<NewSeshStarted>(_seshStarted);
   }
 
   final UserFbRepository _userFbRepository;
+
+  void _seshStarted(
+    NewSeshStarted event,
+    Emitter<NewSeshState> emit,
+  ) async {
+    emit(state.copyWith(status: () => NewSeshStatus.loading));
+
+    final now = DateTime.now();
+    final formatter = DateFormat('MM-dd-yyyy');
+    String formattedDate = formatter.format(now);
+
+    emit(state.copyWith(
+      status: () => NewSeshStatus.success,
+      sesh: () => Sesh(
+        id: state.sesh.id,
+        dateTime: formattedDate,
+        seshLength: state.sesh.seshLength,
+        climbs: state.sesh.climbs
+      ),
+    ));
+  }
 
   Future<void> _createClimb(
     NewSeshCreateClimbRequested event,

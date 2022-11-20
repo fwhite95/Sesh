@@ -29,11 +29,8 @@ class UserFbRepository {
           .doc(user.userId)
           .get()
           .then((value) {
-        if (value.exists) {
-          return true;
-        } else {
-          return false;
-        }
+        print('USER REPO: ${value.exists}');
+        return value.exists;
       });
       return false;
     } catch (e) {

@@ -8,6 +8,8 @@ abstract class NewSeshEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class NewSeshStarted extends NewSeshEvent {}
+
 class NewSeshCreateClimbRequested extends NewSeshEvent {}
 
 class NewSeshDeleteClimbRequested extends NewSeshEvent {}

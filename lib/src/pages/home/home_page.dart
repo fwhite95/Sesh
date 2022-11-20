@@ -1,4 +1,5 @@
 import 'package:climbing_sessions/src/bloc/home/home_bloc.dart';
+import 'package:climbing_sessions/src/bloc/signup/signup_cubit.dart';
 import 'package:climbing_sessions/src/repository/user_repository.dart';
 import 'package:climbing_sessions/src/util/colors.dart';
 import 'package:climbing_sessions/src/widgets/sesh_bottom_nav_bar.dart';
@@ -18,13 +19,12 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = context.select((AppBloc bloc) => bloc.state.user);
-    
+    print('user from AppBloc: $user');
     return BlocProvider(
         create: (context) => HomeBloc(
               userFbRepository: context.read<UserFbRepository>(),
               user: user,
             )
-              ..add(HomeCreateUserRequested(user))
               ..add(HomeSubscriptionRequested(user)),
         child: const HomeView());
   }

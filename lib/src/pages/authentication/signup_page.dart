@@ -59,12 +59,7 @@ class _SignupPageState extends State<SignupPage> {
                 ),
                 Container(
                   padding: EdgeInsets.only(bottom: 15),
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'First Name'),
-                    validator: (value) =>
-                        value!.isEmpty ? 'First name cannot be empty' : null,
-                  ),
+                  child: _FirstNameInput(),
                 ),
                 Container(
                   padding: EdgeInsets.only(bottom: 15),
@@ -85,6 +80,25 @@ class _SignupPageState extends State<SignupPage> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _FirstNameInput extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<SignupCubit, SignupState>(
+      buildWhen: (previous, current) => previous.firstName != current.firstName,
+      builder: (context, state) {
+        return TextField(
+          key: const Key('signupForm_firstNameInput_textField'),
+          onChanged: (firstName) => context.read<SignupCubit>().firstNameChanged(firstName),
+          decoration: InputDecoration(
+              labelText: 'First Name',
+              helperText: '',
+              border: OutlineInputBorder()),
+        );
+      },
     );
   }
 }
