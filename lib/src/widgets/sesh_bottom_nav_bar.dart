@@ -25,13 +25,11 @@ class SeshBottomNavBar extends StatelessWidget {
               listenWhen: (previous, current) =>
                   previous.status != current.status,
               listener: (context, state) async {
-                print('user from home: ${state.user}');
               }),
           BlocListener<SeshBloc, SeshState>(
               listenWhen: (previous, current) =>
                   previous.status != current.status,
               listener: (context, state) {
-                print('user from sesh: ${state.user}');
               }),
         ],
         child: BlocBuilder<AppBloc, AppState>(

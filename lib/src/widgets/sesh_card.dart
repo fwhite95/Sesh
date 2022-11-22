@@ -48,7 +48,7 @@ class SeshCard extends StatelessWidget {
               ),
               Text(_sesh.dateTime!,
                   style: TextStyle(fontSize: 16)),
-              Text('00:00:00', style: TextStyle(fontSize: 16)),
+              Text(_sesh.seshLength ?? '00:00:00', style: TextStyle(fontSize: 16)),
             ],
           ),
         ),

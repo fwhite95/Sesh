@@ -19,7 +19,6 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = context.select((AppBloc bloc) => bloc.state.user);
-    print('user from AppBloc: $user');
     return BlocProvider(
         create: (context) => HomeBloc(
               userFbRepository: context.read<UserFbRepository>(),

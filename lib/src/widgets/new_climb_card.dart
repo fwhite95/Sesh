@@ -29,7 +29,6 @@ class _NewClimbCardState extends State<NewClimbCard> {
     return BlocListener<NewClimbBloc, NewClimbState>(
       listener: (context, state) {
         if (state.status == NewClimbStatus.success) {
-          print('state.climb inside listener: ${state.climb}');
           context
               .read<NewSeshBloc>()
               .add(NewSeshUpdateClimbAttemptsRequested(state.climb));

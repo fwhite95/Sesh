@@ -26,7 +26,6 @@ class SeshBloc extends Bloc<SeshEvent, SeshState> {
     Emitter<SeshState> emit,
   ) async {
     emit(state.copyWith(status: () => SeshStatus.loading));
-    print('seshBloc user: ${event.user.userId}');
     await emit.forEach<UserModel>(
       _userFbRepository.getUser(event.user.userId!),
       onData: (user) => state.copyWith(

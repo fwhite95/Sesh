@@ -8,6 +8,7 @@ import 'package:climbing_sessions/src/util/colors.dart';
 import 'package:climbing_sessions/src/widgets/new_climb_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:stop_watch_timer/stop_watch_timer.dart';
 
 import '../../models/sesh_model.dart';
 
@@ -36,11 +37,17 @@ class NewSeshView extends StatefulWidget {
 }
 
 class _NewSeshViewState extends State<NewSeshView> {
-  String time = '';
+  final StopWatchTimer _stopWatchTimer = StopWatchTimer(); //Create instance
 
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void dispose() async {
+    super.dispose();
+    await _stopWatchTimer.dispose();
   }
 
   @override
@@ -50,11 +57,11 @@ class _NewSeshViewState extends State<NewSeshView> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
-        leading: IconButton(onPressed: () {
-          //Navigator.of(context).pop();
-          // Other option
-          context.read<AppBloc>().add(AppNavToHomePageRequested(user));
-        }, icon: Icon(Icons.arrow_back)),
+        leading: IconButton(
+            onPressed: () {
+              context.read<AppBloc>().add(AppNavToHomePageRequested(user));
+            },
+            icon: Icon(Icons.arrow_back)),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -106,15 +113,32 @@ class _NewSeshViewState extends State<NewSeshView> {
                               ],
                             ),
                           ),
-                          Container(
-                            padding: EdgeInsets.only(top: 10),
-                            child: Text(
-                              '0000',
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                          StreamBuilder<int>(
+                            stream: _stopWatchTimer.rawTime,
+                            builder: (context, snap) {
+                              final value = snap.data;
+                              final displayTime =
+                                  StopWatchTimer.getDisplayTime(value ?? 0);
+                              return Container(
+                                padding: EdgeInsets.only(top: 10),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    if (_stopWatchTimer.isRunning) {
+                                      _stopWatchTimer.onStopTimer();
+                                    } else {
+                                      _stopWatchTimer.onStartTimer();
+                                    }
+                                  },
+                                  child: Text(
+                                    displayTime,
+                                    style: TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
                           ),
                         ],
                       ),
@@ -156,13 +180,13 @@ class _NewSeshViewState extends State<NewSeshView> {
                       child: ElevatedButton(
                         child: Text('Finish Sesh'),
                         onPressed: () async {
-                          print(
-                              'state.user from finish sesh onPressed. before .add: ${state.user}');
+                          
+                          _stopWatchTimer.onStopTimer();
+                          final val = StopWatchTimer.getDisplayTime(
+                              _stopWatchTimer.rawTime.value);
                           context
                               .read<NewSeshBloc>()
-                              .add(NewSeshSaveSeshRequested(state.user));
-                          print(
-                              'state.user from finish sesh onPressed, after .add before nav: ${state.user}');
+                              .add(NewSeshSaveSeshRequested(state.user, val));
                           context
                               .read<AppBloc>()
                               .add(AppNavToHomePageRequested(state.user));

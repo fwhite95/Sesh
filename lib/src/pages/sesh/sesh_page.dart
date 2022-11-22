@@ -19,7 +19,6 @@ class SeshPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = context.select((AppBloc bloc) => bloc.state.user);
-    print('sesh page user before BlocProvider: $user');
     return BlocProvider(
       create: (context) => SeshBloc(
           userFbRepository: context.read<UserFbRepository>(), user: user)
@@ -40,7 +39,6 @@ class _SeshViewState extends State<SeshView> {
   @override
   Widget build(BuildContext context) {
     final user = context.select((SeshBloc bloc) => bloc.state.user);
-    print('user from SeshViewState build: $user');
     return Scaffold(
       appBar: AppBar(
         elevation: 0,

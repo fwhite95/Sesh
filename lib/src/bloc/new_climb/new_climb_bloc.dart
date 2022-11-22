@@ -20,7 +20,6 @@ class NewClimbBloc extends Bloc<NewClimbEvent, NewClimbState> {
     Emitter<NewClimbState> emit,
   ) {
     emit(state.copyWith(status: () => NewClimbStatus.loading));
-    print('from new climb bloc event.grade: ${event.grade}');
     
     emit(state.copyWith(
       status: () => NewClimbStatus.success,

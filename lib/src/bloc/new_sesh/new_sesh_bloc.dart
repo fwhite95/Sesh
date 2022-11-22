@@ -42,11 +42,10 @@ class NewSeshBloc extends Bloc<NewSeshEvent, NewSeshState> {
     emit(state.copyWith(
       status: () => NewSeshStatus.success,
       sesh: () => Sesh(
-        id: state.sesh.id,
-        dateTime: formattedDate,
-        seshLength: state.sesh.seshLength,
-        climbs: state.sesh.climbs
-      ),
+          id: state.sesh.id,
+          dateTime: formattedDate,
+          seshLength: state.sesh.seshLength,
+          climbs: state.sesh.climbs),
     ));
   }
 
@@ -113,35 +112,39 @@ class NewSeshBloc extends Bloc<NewSeshEvent, NewSeshState> {
     NewSeshSaveSeshRequested event,
     Emitter<NewSeshState> emit,
   ) async {
-    print('_saveSesh newSeshBloc');
-    emit(state.copyWith(status: () => NewSeshStatus.loading));
+    emit(state.copyWith(
+      status: () => NewSeshStatus.loading,
+      sesh: () => Sesh(
+          id: state.sesh.id,
+          dateTime: state.sesh.dateTime,
+          seshLength: event.seshLength,
+          climbs: state.sesh.climbs,
+        ),
+      ));
     try {
       List<Sesh> seshList = [];
       state.user.seshes?.forEach((s) {
         seshList.add(s);
       });
+      
       seshList.add(state.sesh);
-      print('seshList from newSeshBloc: $seshList');
-      state.copyWith(
-        user: () => UserModel(
-            email: state.user.email,
-            firstName: state.user.firstName,
-            userId: state.user.userId,
-            seshes: seshList),
-      );
+      // state.copyWith(
+      //   user: () => UserModel(
+      //       email: state.user.email,
+      //       firstName: state.user.firstName,
+      //       userId: state.user.userId,
+      //       seshes: seshList),
+      // );
       UserModel updatedUser = UserModel(
           email: state.user.email,
           firstName: state.user.firstName,
           userId: state.user.userId,
           seshes: seshList);
 
-      print('newUserModel  $updatedUser');
 
       await _userFbRepository.updateFirebaseUser(updatedUser);
       emit(state.copyWith(
-        status: () => NewSeshStatus.success,
-        user: () => updatedUser
-      ));
+          status: () => NewSeshStatus.success, user: () => updatedUser));
     } catch (_) {
       print(_.toString());
       emit(state.copyWith(

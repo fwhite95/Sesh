@@ -29,7 +29,6 @@ class UserFbRepository {
           .doc(user.userId)
           .get()
           .then((value) {
-        print('USER REPO: ${value.exists}');
         return value.exists;
       });
       return false;
@@ -53,7 +52,6 @@ class UserFbRepository {
 
   /// Saves the [UserModel]
   Future<void> updateFirebaseUser(UserModel user) async {
-    print('USER FROM REPO: $user');
     try {
       await _firebaseFirestore
           .collection('users')

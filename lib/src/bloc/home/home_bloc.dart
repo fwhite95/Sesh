@@ -45,10 +45,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   ) async {
     emit(state.copyWith(status: () => HomeStatus.loading));
     try {
-      print('_createFbUser inside try');
       bool exists = await _userFbRepository.doesUserExist(event.user);
       if (!exists) {
-        print('inside if _createFbUser');
         await _userFbRepository.createFirebaseUser(event.user);
       }
 
