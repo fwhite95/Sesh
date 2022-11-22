@@ -70,7 +70,8 @@ class _NewClimbCardState extends State<NewClimbCard> {
                   ],
                   color: AppColors.orange,
                   borderRadius: BorderRadius.all(Radius.circular(25))),
-              child: Column(children: [
+              child: Column(
+                children: [
                 Container(
                   padding: EdgeInsets.only(bottom: 10, top: 10),
                   child: Row(
@@ -123,7 +124,15 @@ class _NewClimbCardState extends State<NewClimbCard> {
                       Padding(
                         padding: const EdgeInsets.all(3.0),
                         child: IconButton(
-                            onPressed: () {}, icon: Icon(Icons.remove)),
+                            onPressed: () {
+                              final val = state.climb.attempts! - 1;
+                              if (val > 0) {
+                                context
+                                    .read<NewClimbBloc>()
+                                    .add(NewClimbUpdateAttemptsRequested(val));
+                              }
+                            },
+                            icon: Icon(Icons.remove)),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(3.0),
@@ -132,9 +141,30 @@ class _NewClimbCardState extends State<NewClimbCard> {
                       ),
                       Padding(
                         padding: const EdgeInsets.all(3.0),
-                        child:
-                            IconButton(onPressed: () {}, icon: Icon(Icons.add)),
+                        child: IconButton(
+                            onPressed: () {
+                              final val = state.climb.attempts! + 1;
+                              context
+                                  .read<NewClimbBloc>()
+                                  .add(NewClimbUpdateAttemptsRequested(val));
+                            },
+                            icon: Icon(Icons.add)),
                       ),
+                    ],
+                  ),
+                ),
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text('Completed: ', style: TextStyle(fontSize: 16)),
+                      Checkbox(
+                          value: state.climb.completed ?? false,
+                          onChanged: (value) {
+                            context
+                                .read<NewClimbBloc>()
+                                .add(NewClimbUpdateCompletedRequested(value!));
+                          }),
                     ],
                   ),
                 ),

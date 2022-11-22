@@ -45,11 +45,16 @@ class _NewSeshViewState extends State<NewSeshView> {
 
   @override
   Widget build(BuildContext context) {
+    final user = context.select((NewSeshBloc bloc) => bloc.state.user);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
-        leading: IconButton(onPressed: () {}, icon: Icon(Icons.arrow_back)),
+        leading: IconButton(onPressed: () {
+          //Navigator.of(context).pop();
+          // Other option
+          context.read<AppBloc>().add(AppNavToHomePageRequested(user));
+        }, icon: Icon(Icons.arrow_back)),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
