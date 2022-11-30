@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:climbing_sessions/src/repository/user_repository.dart';
 import 'package:equatable/equatable.dart';
@@ -9,16 +11,19 @@ part 'home_event.dart';
 part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  HomeBloc({
-    required UserFbRepository userFbRepository,
-    required UserModel user
-  })  : _userFbRepository = userFbRepository,
+  HomeBloc(
+      {required UserFbRepository userFbRepository, required UserModel user})
+      : _userFbRepository = userFbRepository,
         super(HomeState(user: user)) {
     on<HomeSubscriptionRequested>(_onSubscriptionRequested);
     on<HomeCreateUserRequested>(_createFbUser);
+    _userSubscription = _userFbRepository
+        .getUser(user.userId!)
+        .listen((user) => add(HomeSubscriptionRequested(user)));
   }
 
   final UserFbRepository _userFbRepository;
+  late final StreamSubscription<UserModel> _userSubscription;
 
   Future<void> _onSubscriptionRequested(
     HomeSubscriptionRequested event,
@@ -56,5 +61,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     } catch (_) {
       emit(state.copyWith(status: () => HomeStatus.failure));
     }
+  }
+
+  @override
+  Future<void> close() {
+    //_userSubscription.cancel();
+    return super.close();
   }
 }

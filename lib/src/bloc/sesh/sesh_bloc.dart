@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:climbing_sessions/src/models/user_model.dart';
 import 'package:climbing_sessions/src/repository/user_repository.dart';
@@ -17,9 +19,12 @@ class SeshBloc extends Bloc<SeshEvent, SeshState> {
         super(SeshState(user: user)) {
     on<SeshUserSubscriptionRequested>(_onSubscriptionRequested);
     on<SeshDeleteSesh>(_deleteSesh);
+    _userSubscription = _userFbRepository.getUser(user.userId!).listen(
+      (user) => add(SeshUserSubscriptionRequested(user)));
   }
 
   final UserFbRepository _userFbRepository;
+  late final StreamSubscription<UserModel> _userSubscription;
 
   Future<void> _onSubscriptionRequested(
     SeshUserSubscriptionRequested event,
@@ -55,5 +60,11 @@ class SeshBloc extends Bloc<SeshEvent, SeshState> {
     } catch (_) {
       emit(state.copyWith(status: () => SeshStatus.failure));
     }
+  }
+
+  @override 
+  Future<void> close() {
+    //_userSubscription.cancel();
+    return super.close();
   }
 }

@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc/app/app_bloc.dart';
+import '../../bloc/sesh_card/sesh_card_bloc.dart';
 import '../sesh/sesh_page.dart';
 
 class HomePage extends StatelessWidget {
@@ -23,8 +24,7 @@ class HomePage extends StatelessWidget {
         create: (context) => HomeBloc(
               userFbRepository: context.read<UserFbRepository>(),
               user: user,
-            )
-              ..add(HomeSubscriptionRequested(user)),
+            )..add(HomeSubscriptionRequested(user)),
         child: const HomeView());
   }
 }
@@ -37,6 +37,11 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = context.select((HomeBloc bloc) => bloc.state.user);
@@ -53,7 +58,7 @@ class _HomeViewState extends State<HomeView> {
         backgroundColor: AppColors.green,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      bottomNavigationBar: const SeshBottomNavBar(),
+      bottomNavigationBar:  SeshBottomNavBar(),
       body: MultiBlocListener(
         listeners: [
           BlocListener<HomeBloc, HomeState>(
@@ -102,9 +107,15 @@ class _HomeViewState extends State<HomeView> {
                         for (final sesh in state.user.seshes!)
                           Padding(
                             padding: const EdgeInsets.only(bottom: 8.0),
-                            child: SeshCard(sesh: sesh),
+                            child: BlocProvider(
+                              create: (context) => SeshCardBloc(
+                                  userFbRepository:
+                                      context.read<UserFbRepository>(),
+                                  user: user,
+                                  sesh: sesh),
+                              child: SeshCard(sesh: sesh),
+                            ),
                           ),
-                        
                       ]),
                     ),
                   ]),

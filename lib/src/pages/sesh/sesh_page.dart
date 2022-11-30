@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc/home/home_bloc.dart';
+import '../../bloc/sesh_card/sesh_card_bloc.dart';
 
 class SeshPage extends StatelessWidget {
   const SeshPage({super.key});
@@ -56,9 +57,11 @@ class _SeshViewState extends State<SeshView> {
           ),
         ),
         actions: [
-          IconButton(onPressed: () {
-            context.read<AppBloc>().add(AppLogoutRequested());
-          }, icon: Icon(Icons.menu)),
+          IconButton(
+              onPressed: () {
+                context.read<AppBloc>().add(AppLogoutRequested());
+              },
+              icon: Icon(Icons.menu)),
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -86,7 +89,6 @@ class _SeshViewState extends State<SeshView> {
         },
         child: BlocBuilder<SeshBloc, SeshState>(
           builder: (context, state) {
-
             if (state.status == HomeStatus.loading) {
               return const Center(
                 child: CircularProgressIndicator(),
@@ -111,7 +113,14 @@ class _SeshViewState extends State<SeshView> {
                             for (final sesh in state.user.seshes!)
                               Padding(
                                 padding: const EdgeInsets.only(bottom: 8.0),
-                                child: SeshCard(sesh: sesh),
+                                child: BlocProvider(
+                                  create: (context) => SeshCardBloc(
+                                      userFbRepository:
+                                          context.read<UserFbRepository>(),
+                                      user: user,
+                                      sesh: sesh),
+                                  child: SeshCard(sesh: sesh),
+                                ),
                               ),
                           ],
                         ),
