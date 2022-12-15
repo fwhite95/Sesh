@@ -1,6 +1,5 @@
-import 'package:climbing_sessions/src/bloc/sesh/sesh_bloc.dart';
-import 'package:climbing_sessions/src/models/climb_model.dart';
 import 'package:climbing_sessions/src/models/sesh_model.dart';
+import 'package:climbing_sessions/src/pages/sesh/sesh_detail_screen.dart';
 import 'package:climbing_sessions/src/util/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -98,7 +97,14 @@ class SeshCard extends StatelessWidget {
                         },
                         icon: Icon(Icons.delete)),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        print('_sesh from ... : $_sesh');
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  SeshDetailScreen(sesh: _sesh)),
+                        );
+                      },
                       icon: Icon(Icons.more_horiz),
                     ),
                   ],

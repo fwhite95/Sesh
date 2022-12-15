@@ -110,7 +110,7 @@ class _SeshViewState extends State<SeshView> {
                         )
                       : Column(
                           children: [
-                            for (final sesh in state.user.seshes!)
+                            for (final sesh in state.user.seshes!.reversed)
                               Padding(
                                 padding: const EdgeInsets.only(bottom: 8.0),
                                 child: BlocProvider(

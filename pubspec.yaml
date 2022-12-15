@@ -28,6 +28,7 @@ dependencies:
   fl_chart: ^0.55.2
   formz: ^0.4.1
   stop_watch_timer: ^2.0.0
+  graphic: ^1.0.0
 
 dev_dependencies:
   flutter_test:

@@ -104,7 +104,7 @@ class _HomeViewState extends State<HomeView> {
                       padding: const EdgeInsets.only(
                           top: 10, left: 40, right: 40, bottom: 10),
                       child: Column(children: [
-                        for (final sesh in state.user.seshes!)
+                        for (final sesh in state.user.seshes!.reversed)
                           Padding(
                             padding: const EdgeInsets.only(bottom: 8.0),
                             child: BlocProvider(

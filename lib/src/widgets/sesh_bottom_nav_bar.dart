@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../models/user_model.dart';
 import '../pages/sesh/sesh_page.dart';
+import '../pages/settings/settings_page.dart';
 import '../repository/user_repository.dart';
 
 class SeshBottomNavBar extends StatelessWidget {
@@ -24,13 +25,11 @@ class SeshBottomNavBar extends StatelessWidget {
           BlocListener<HomeBloc, HomeState>(
               listenWhen: (previous, current) =>
                   previous.status != current.status,
-              listener: (context, state) async {
-              }),
+              listener: (context, state) async {}),
           BlocListener<SeshBloc, SeshState>(
               listenWhen: (previous, current) =>
                   previous.status != current.status,
-              listener: (context, state) {
-              }),
+              listener: (context, state) {}),
         ],
         child: BlocBuilder<AppBloc, AppState>(
           builder: (context, state) {
@@ -78,7 +77,10 @@ class SeshBottomNavBar extends StatelessWidget {
                       Icons.settings,
                       color: Colors.white,
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => SettingsPage()));
+                    },
                   ),
                 )
               ],

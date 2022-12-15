@@ -161,9 +161,8 @@ class _NewSeshViewState extends State<NewSeshView> {
                             : SingleChildScrollView(
                                 child: Column(
                                   children: [
-                                    /// Needs to be sorted by id, or turned from list
-                                    /// into a
-                                    for (final climb in state.sesh.climbs!)
+                                    for (final climb
+                                        in state.sesh.climbs!)
                                       BlocProvider(
                                         create: (context) =>
                                             NewClimbBloc(initialClimb: climb),
@@ -180,7 +179,6 @@ class _NewSeshViewState extends State<NewSeshView> {
                       child: ElevatedButton(
                         child: Text('Finish Sesh'),
                         onPressed: () async {
-                          
                           _stopWatchTimer.onStopTimer();
                           final val = StopWatchTimer.getDisplayTime(
                               _stopWatchTimer.rawTime.value);
