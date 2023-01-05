@@ -1,19 +1,22 @@
 import 'package:climbing_sessions/src/models/climb_model.dart';
+import 'package:climbing_sessions/src/models/sesh_stats_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
-class Sesh extends Equatable{
+class Sesh extends Equatable {
   const Sesh({
     required this.id,
     this.dateTime,
     required this.seshLength,
     required this.climbs,
+    this.seshStats,
   });
 
   final String? id;
   final String? dateTime;
   final String? seshLength;
   final List<Climb>? climbs;
+  final SeshStatsModel? seshStats;
 
   static Sesh fromJson(Map<String, dynamic> json) {
     List<Climb> climbs = [];
@@ -29,7 +32,7 @@ class Sesh extends Equatable{
         dateTime: json['date_time'],
         seshLength: json['sesh_length'],
         climbs: climbs,
-        );
+        seshStats: json['sesh_stats']);
   }
 
   Map<String, dynamic> toJson() {
@@ -37,6 +40,7 @@ class Sesh extends Equatable{
     data['id'] = id;
     data['date_time'] = dateTime;
     data['sesh_length'] = seshLength;
+    data['sesh_stats'] = seshStats;
 
     if (climbs != null) {
       data['climbs'] = climbs?.map((v) => v.toJson()).toList();
@@ -49,5 +53,5 @@ class Sesh extends Equatable{
   static const empty = Sesh(id: '', seshLength: '', climbs: []);
 
   @override
-  List<Object?> get props => [id, dateTime, seshLength, climbs];
+  List<Object?> get props => [id, dateTime, seshLength, climbs, seshStats];
 }
